@@ -1,3 +1,59 @@
+function _data() {
+    const date = new Date();
+    if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
+        answer = `Aktualna data: ${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
+        if (date.getDate() > 0 && date.getDate() < 9) {
+            answer = `Aktualna data: 0${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
+        }
+    }
+    else {
+        answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    }
+}
+function _help() {
+    answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
+}
+function _package() {
+    answer = `Twój pakiet to: ${tier}`;
+}
+function _repeat(question) {
+    answer = question.substring(8);
+}
+const body = document.querySelector('body');
+function _theme() {
+    body.classList.toggle('light');
+    if (body.classList.contains('light')) {
+        answer = '<i class="fas fa-sun"></i> Zmieniono motyw na: jasny';
+    }
+    else {
+        answer = '<i class="fas fa-moon"></i> Zmieniono motyw na: ciemny';
+    }
+}
+function _time() {
+    const date = new Date();
+    if (date.getMinutes() <= 9) {
+        answer = `Aktualna godzina: ${date.getHours()}:0${date.getMinutes()}`;
+    }
+    else {
+        answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
+    }
+}
+const news = 'Wyświetlanie pakietu bota (domyślnie "Standard"). <br><br>Nową komendę /news która wyświetla ostatnio dodane nowości. <br><br> Nowa komenda /package wyświetlająca aktualny pakiet bota <br><br> Nowa komenda /youtube <wyszukaj>, która wyszukuję podaną frazę a następnie ją wyświetla';
+function _update() {
+    answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
+}
+function _version() {
+    answer = `Aktualna moja wersja to: ${version}, wprowadzona ${updated}`;
+}
+function _youtube(question) {
+    let searchQuery = question.substring(9);
+    if (searchQuery.length == searchQuery.split(' ').length - 1 || searchQuery == '') {
+        answer = `Nie znaleiono odpowiednich wyników dla podanej nazwy!`;
+    }
+    else {
+        answer = `Wyszukano filmy w serwisie YouTube: <a href="https://www.youtube.com/results?search_query=${searchQuery}">zobacz</a>`;
+    }
+}
 const form = document.querySelector('#input_form');
 const input = document.querySelector('#input');
 form.addEventListener('submit', function (event) {
@@ -23,16 +79,7 @@ function checkAnswer(question) {
         else {
             const inputValue = input.value.trim();
             let result;
-            if (inputValue.includes('+')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('-')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('*')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('/')) {
+            if (question.includes('+') || question.includes('-') || question.includes('*') || question.includes('/')) {
                 result = eval(inputValue);
             }
             else {
@@ -43,37 +90,31 @@ function checkAnswer(question) {
     }
     else {
         if (question.includes('/data') || question.includes('/date')) {
-            const date = new Date();
-            if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
-                answer = `Aktualna data: ${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-                if (date.getDate() > 0 && date.getDate() < 9) {
-                    answer = `Aktualna data: 0${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-                }
-            }
-            else {
-                answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-            }
+            _data();
         }
         else if (question.includes('/version') || question.includes('/ver') || question.includes('/wersja')) {
-            answer = `Aktualna moja wersja to: ${version}`;
+            _version();
         }
         else if (question.includes('/powtórz') || question.includes('/repeat')) {
-            answer = question.substring(8);
+            _repeat(question);
         }
         else if (question.includes('/help') || question.includes('/pomoc')) {
-            answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
+            _help();
         }
         else if (question.includes('theme') || question.includes('motyw')) {
-            toggleTheme();
+            _theme();
         }
         else if (question.includes('/time') || question.includes('/czas')) {
-            const date = new Date();
-            if (date.getMinutes() <= 9) {
-                answer = `Aktualna godzina: ${date.getHours()}:0${date.getMinutes()}`;
-            }
-            else {
-                answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
-            }
+            _time();
+        }
+        else if (question.includes('/news') || question.includes('/nowości')) {
+            _update();
+        }
+        else if (question.includes('/package') || question.includes('/pakiet')) {
+            _package();
+        }
+        else if (question.includes('/youtube')) {
+            _youtube(question);
         }
         else {
             failedQuestion();
@@ -94,23 +135,16 @@ function createMessage(title) {
         message.classList.add('anim');
     }, 150);
 }
-const body = document.querySelector('body');
-function toggleTheme() {
-    body.classList.toggle('light');
-    if (body.classList.contains('light')) {
-        answer = '<i class="fas fa-sun"></i> Zmieniono motyw na: jasny';
-    }
-    else {
-        answer = '<i class="fas fa-moon"></i> Zmieniono motyw na: ciemny';
-    }
-}
 const update_date = document.querySelector('#update_date');
 const update_version = document.querySelector('#update_version');
-const version = 'v1.0.1 [Beta]';
+const bot_tier = document.querySelector('#bot_tier');
+const version = 'v1.0.2 [Beta]';
 const updated = '04.03.2023';
+const tier = 'Standard';
 function update() {
     update_date.innerHTML = updated;
     update_version.innerHTML = version;
+    bot_tier.innerHTML = tier;
 }
 const answers = {
     'czerwony': 'Kolor czerwony jest jednym z trzech podstawowych kolorów światła widzialnego, obok zielonego i niebieskiego. <br><br>Jest to kolor o długości fali około 620-750 nanometrów, co oznacza, że ma on najdłuższą długość fali spośród podstawowych kolorów. Kolor czerwony kojarzony jest z miłością, emocjami, energią i siłą. Jest często stosowany w symbolice, np. w flagach państwowych, logo firm czy symbolach religijnych. W psychologii koloru czerwonego przypisuje się wpływ na nasze emocje, może zwiększać poczucie pewności siebie, pobudzać i zwiększać tętno.',
