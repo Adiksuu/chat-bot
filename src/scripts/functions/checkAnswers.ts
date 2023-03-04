@@ -40,7 +40,10 @@ function checkAnswer(question: string) {
             }
         } else if (question.includes('/version') || question.includes('/ver') || question.includes('/wersja')) {
             answer = `Aktualna moja wersja to: ${version}`
-        } else if (question.includes('/help') || question.includes('/pomoc')) {
+        } else if (question.includes('/powtórz') || question.includes('/repeat')) {
+            answer = question.substring(8)
+        } 
+        else if (question.includes('/help') || question.includes('/pomoc')) {
             answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`
         } else if (question.includes('theme') || question.includes('motyw')) {
             toggleTheme()
