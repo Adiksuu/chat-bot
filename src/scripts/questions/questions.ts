@@ -1,115 +1,5 @@
-const form = document.querySelector('#input_form');
-const input = document.querySelector('#input');
-form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    if ((input.value.length - input.value.split(' ').length - 1) > -2) {
-        createMessage(input.value);
-        input.value = '';
-    }
-});
-function failedQuestion() {
-    answer = 'Niestety ale nie udało mi się znaleść odpowiedzi na twoje pytanie, sprawdź czy w mojej dokumentacji znajduję się podane przez ciebie pytanie. Jeśli tak, niezwłocznie zgłoś nam to, że nie wyświetlam odpowiedzi! Jeśli nie, spróbuj nam ją zaproponować!';
-}
-function checkAnswer(question) {
-    if (!question.startsWith('/')) {
-        if (!question.includes('+') && !question.includes('-') && !question.includes('*') && !question.includes('/')) {
-            if (answers.hasOwnProperty(question)) {
-                answer = answers[question];
-            }
-            else {
-                failedQuestion();
-            }
-        }
-        else {
-            const inputValue = input.value.trim();
-            let result;
-            if (inputValue.includes('+')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('-')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('*')) {
-                result = eval(inputValue);
-            }
-            else if (inputValue.includes('/')) {
-                result = eval(inputValue);
-            }
-            else {
-                failedQuestion();
-            }
-            answer = `Wynikiem podanego działania jest: ${result}`;
-        }
-    }
-    else {
-        if (question.includes('/data') || question.includes('/date')) {
-            const date = new Date();
-            if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
-                answer = `Aktualna data: ${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-                if (date.getDate() > 0 && date.getDate() < 9) {
-                    answer = `Aktualna data: 0${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-                }
-            }
-            else {
-                answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-            }
-        }
-        else if (question.includes('/version') || question.includes('/ver') || question.includes('/wersja')) {
-            answer = `Aktualna moja wersja to: ${version}`;
-        }
-        else if (question.includes('/help') || question.includes('/pomoc')) {
-            answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
-        }
-        else if (question.includes('theme') || question.includes('motyw')) {
-            toggleTheme();
-        }
-        else if (question.includes('/time') || question.includes('/czas')) {
-            const date = new Date();
-            if (date.getMinutes() <= 9) {
-                answer = `Aktualna godzina: ${date.getHours()}:0${date.getMinutes()}`;
-            }
-            else {
-                answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
-            }
-        }
-        else {
-            failedQuestion();
-        }
-    }
-}
-let answer;
-const chat = document.querySelector(".chat");
-function createMessage(title) {
-    let message = document.createElement("div");
-    title = title.toLowerCase();
-    checkAnswer(title);
-    message.classList.add("message");
-    message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
-    chat.appendChild(message);
-    chat.scrollTop = chat.scrollHeight;
-    window.setTimeout(() => {
-        message.classList.add('anim');
-    }, 150);
-}
-const body = document.querySelector('body');
-function toggleTheme() {
-    body.classList.toggle('light');
-    if (body.classList.contains('light')) {
-        answer = '<i class="fas fa-sun"></i> Zmieniono motyw na: jasny';
-    }
-    else {
-        answer = '<i class="fas fa-moon"></i> Zmieniono motyw na: ciemny';
-    }
-}
-const update_date = document.querySelector('#update_date');
-const update_version = document.querySelector('#update_version');
-const version = 'v1.0.1 [Beta]';
-const updated = '04.03.2023';
-function update() {
-    update_date.innerHTML = updated;
-    update_version.innerHTML = version;
-}
-const answers = {
+const answers: any = {
+// KOLORY
     'czerwony': 'Kolor czerwony jest jednym z trzech podstawowych kolorów światła widzialnego, obok zielonego i niebieskiego. <br><br>Jest to kolor o długości fali około 620-750 nanometrów, co oznacza, że ma on najdłuższą długość fali spośród podstawowych kolorów. Kolor czerwony kojarzony jest z miłością, emocjami, energią i siłą. Jest często stosowany w symbolice, np. w flagach państwowych, logo firm czy symbolach religijnych. W psychologii koloru czerwonego przypisuje się wpływ na nasze emocje, może zwiększać poczucie pewności siebie, pobudzać i zwiększać tętno.',
     'pomarańczowy': 'Kolor pomarańczowy to mieszanka kolorów czerwonego i żółtego, o długości fali między 590 a 620 nanometrów. <br><br>Jest to kolor energetyczny i radosny, kojarzony z zachodem słońca, owocami cytrusowymi i ogniem. Pomarańczowy symbolizuje optymizm, przyjaźń, kreatywność i witalność. W psychologii koloru pomarańczowego przypisuje się wpływ na pobudzenie, zwiększenie koncentracji i motywację. Jest często stosowany w reklamie i projektowaniu graficznym, jako kolor przyciągający uwagę i zwiększający aktywność.',
     'żółty': 'Kolor żółty to kolor podstawowy, o długości fali między 570 a 590 nanometrów. Jest to kolor jasny, słoneczny i ciepły, kojarzony z promieniami słońca, kwiatami i owocami. <br><br>Żółty symbolizuje radość, optymizm, kreatywność i młodość. W psychologii koloru żółtego przypisuje się wpływ na pobudzenie i zwiększenie koncentracji, a także na poprawę nastrój i zmniejszenie stresu. W sztuce i designie żółty często stosowany jest jako kolor akcentowy, przyciągający uwagę i dodający energii. W symbolice żółty oznacza także mądrość i wiedzę.',
@@ -121,6 +11,7 @@ const answers = {
     'biały': 'Kolor biały to kolor oznaczający pełne odbicie światła, pozbawiony barwnika i koloru. Jest to kolor czystości, niewinności i prostoty, kojarzony z chmurami, śniegiem i jedwabiem. Biały symbolizuje spokój, harmonię, czystość i równowagę.<br><br> W psychologii koloru białego przypisuje się wpływ na wprowadzenie poczucia spokoju i harmonii, ale także na zwiększenie poczucia izolacji i odczucia zimna. Biały jest często stosowany w projektowaniu wnętrz, architekturze i ubraniach jako kolor kojarzący się z elegancją i czystością. W symbolice, biały oznacza często niepokalanie poczętą Marię, ale także nadzieję i optymizm.',
     'szary': 'Kolor szary to kolor otrzymany przez połączenie koloru czarnego i białego, co daje odcień bliski kolorowi szarości.<br><br> Jest to kolor surowy, spokojny i poważny, kojarzony z betonem, metalami i deszczem. Szary symbolizuje stabilność, prostotę, dojrzałość i powagę. W psychologii koloru szarego przypisuje się wpływ na wprowadzenie poczucia stabilizacji i równowagi, ale także na zwiększenie poczucia nudności i monotonii. Szary jest często stosowany w projektowaniu mody, wnętrz i grafik jako kolor kojarzący się z elegancją i minimalizmem. W symbolice, szary oznacza często stabilność i siłę wewnętrzną.',
     'brązowy': 'Kolor brązowy to kolor otrzymany przez połączenie koloru czerwonego, żółtego i czarnego, co daje odcień bliski kolorowi brązowemu. <br><br>Jest to kolor ciepły, naturalny i rustykalny, kojarzony z drewnem, ziemią i liśćmi. Brązowy symbolizuje stabilność, ciepło, bezpieczeństwo i przyjazność. W psychologii koloru brązowego przypisuje się wpływ na wprowadzenie poczucia stabilizacji i bezpieczeństwa, ale także na zwiększenie poczucia masywności i stagnacji. Brązowy jest często stosowany w projektowaniu wnętrz, architekturze i modzie jako kolor kojarzący się z przytulnością i naturą. W symbolice, brązowy oznacza często ziemię, solidność i ciągłość życia.',
+// ROZMOWA
     'cześć': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
     'siema': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
     'witaj': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
@@ -128,10 +19,12 @@ const answers = {
     'dzień dobry': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
     'dobrywieczór': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
     'dobry wieczór': 'Witaj! Jestem ChatBot, w czym mogę pomóc?',
+// PORY ROKU
     'wiosna': 'Wiosna to pora roku, która charakteryzuje się stopniowym ociepleniem temperatury, roztapianiem śniegu, pojawieniem się kwitnących drzew i kwiatów oraz wydłużeniem dnia.<br><br> W tym okresie można również zauważyć wzmożoną aktywność zwierząt i ptaków, które powracają zimowymi kwaterami.',
     'lato': 'Lato to pora roku, która charakteryzuje się najwyższymi temperaturami, długimi dniami i krótkimi nocami.<br><br> W tym okresie wiele osób wyjeżdża na urlopy i wakacje, a wakacyjny sezon jest na szczycie. W upalne dni wiele osób szuka schronienia przed słońcem i upałem w parkach, na plażach czy w basenach.',
     'jesień': 'Jesień to pora roku, która charakteryzuje się zmniejszeniem temperatury, opadami deszczu, opadami liści z drzew oraz skróceniem dnia. <br><br>W tym okresie można zauważyć spadek aktywności zwierząt i ptaków, które przygotowują się do zimy.',
     'zima': 'Zima to pora roku, która charakteryzuje się niskimi temperaturami, śniegiem i mrozem. W tym okresie dni są krótkie, a noce długie. <br><br>Często występują też silne wiatry, a drzewa tracą swoje liście lub igliwie. Zima to czas, w którym wiele osób zajmuje się sportami zimowymi, takimi jak narciarstwo czy snowboard, a dzieci budują bałwany i sanki.',
+// PROGRAMOWANIE
     'java': 'Java to obiektowy język programowania stworzony w 1995 roku przez firmę Sun Microsystems. <br><br>Java jest wykorzystywana do tworzenia aplikacji webowych, mobilnych oraz desktopowych. Największą zaletą Javy jest jej przenośność - programy napisane w Javie mogą działać na różnych platformach bez konieczności ponownego kompilowania.',
     'python': 'Python to interpretowany język programowania stworzony w 1989 roku przez Guido van Rossuma. <br><br>Python jest popularny w dziedzinie analizy danych, uczenia maszynowego i sztucznej inteligencji, ale może być także stosowany do tworzenia aplikacji webowych, desktopowych i gier.',
     'cpp': 'C++ to język programowania stworzony na bazie języka C w 1983 roku przez Bjarne Stroustrupa. <br><br>C++ jest często stosowany w aplikacjach wymagających wydajności, takich jak gry komputerowe, systemy operacyjne czy oprogramowanie systemów wbudowanych.',
@@ -147,6 +40,7 @@ const answers = {
     'sql': 'SQL to język programowania stosowany do zarządzania bazami danych. <br><br>SQL jest często wykorzystywany w aplikacjach webowych, systemach zarządzania bazami danych oraz raportowaniu i analizowaniu danych.',
     "html": "HTML to język znaczników stosowany do tworzenia stron internetowych. <br><br>HTML pozwala na opisanie struktury dokumentu, dodawanie treści i określanie stylów wyświetlania.",
     "css": "CSS to język stylów stosowany do definiowania wyglądu stron internetowych napisanych w HTML. <br><br>CSS pozwala na określanie kolorów, czcionek, marginesów, wypełnień i innych właściwości wyglądu.",
+// APLIKACJE
     'instagram': '<i class="fab fa-instagram"></i> Instagram to platforma społecznościowa, która umożliwia użytkownikom udostępnianie zdjęć i filmów, a także komunikowanie się z innymi użytkownikami poprzez komentarze i prywatne wiadomości.<br><br> Wśród funkcji Instagrama znajdują się m.in. Stories, IGTV, Reels, a także narzędzia do edycji i filtrowania zdjęć.',
     'twitter': '<i class="fab fa-twitter"></i> Twitter to platforma społecznościowa, która umożliwia użytkownikom tworzenie krótkich postów o długości do 280 znaków. Użytkownicy mogą komunikować się ze sobą poprzez tzw. tweety oraz prywatne wiadomości. <br><br> Wśród funkcji Twittera znajdują się m.in. hasztagi, które umożliwiają łatwe wyszukiwanie tweetów z danym tagiem.',
     'linkedin': '<i class="fab fa-linkedin"></i> LinkedIn to platforma społecznościowa skierowana głównie do profesjonalistów i osób poszukujących pracy. Użytkownicy mogą tworzyć profile zawodowe, udostępniać informacje o swojej karierze, nawiązywać kontakty biznesowe oraz prowadzić działań marketingowych i reklamowych. <br><br>Wśród funkcji LinkedIna znajdują się m.in. grupy branżowe, możliwość publikowania artykułów i postów na swoim profilu, a także narzędzia do rekrutacji pracowników.',
@@ -155,12 +49,15 @@ const answers = {
     'youtube': '<i class="fab fa-youtube"></i> YouTube to serwis internetowy, który umożliwia użytkownikom przeglądanie, udostępnianie i publikowanie filmów wideo. <br><br>Jest to jedna z największych platform wideo na świecie i zawiera mnóstwo różnorodnych treści, takich jak filmy instruktażowe, vlogi, filmy krótkometrażowe, teledyski i wiele innych.',
     'discord': '<i class="fab fa-discord"></i> Discord to popularna aplikacja umożliwiająca komunikację głosową i tekstową w czasie rzeczywistym. <br><br> Jest to narzędzie przeznaczone przede wszystkim dla graczy, jednak może być również stosowane przez innych użytkowników. Discord umożliwia tworzenie i dołączanie do serwerów, na których można prowadzić rozmowy prywatne lub publiczne, dzielić się plikami, oglądać filmy i wiele innych. Aplikacja ta oferuje również możliwość integracji z innymi serwisami i narzędziami, takimi jak Twitch, YouTube czy Spotify. <br><br>Użytkownicy mogą tworzyć boty, które automatyzują niektóre zadania na serwerze i ułatwiają zarządzanie nim. Discord cieszy się dużą popularnością wśród społeczności graczy i streamerów, ale z powodzeniem może być stosowany również w innych dziedzinach, takich jak edukacja, biznes czy prywatna komunikacja.',
     'messenger': '<i class="fab fa-facebook-messenger"></i> Messenger to aplikacja do komunikacji społecznej, stworzona przez firmę Facebook. Umożliwia użytkownikom wymianę wiadomości tekstowych, głosowych oraz obrazów. Aplikacja działa na różnych platformach, w tym na systemach operacyjnych iOS i Android, a także na komputerach. <br><br> Messenger jest jedną z najpopularniejszych aplikacji do komunikacji społecznej, ze względu na swoją wygodę i łatwość użytkowania. Użytkownicy mogą tworzyć grupy i rozmawiać z wieloma osobami jednocześnie, wysyłać pliki oraz korzystać z różnych emotikonów i naklejek. Aplikacja Messenger oferuje także funkcję dzwonienia głosowego i wideorozmów, co umożliwia użytkownikom prowadzenie rozmów w czasie rzeczywistym. Messenger jest także wykorzystywany przez firmy do kontaktu z klientami oraz do przeprowadzania działań marketingowych. <br><br> Dostępne są różne funkcje, takie jak chatboty, które umożliwiają firmom automatyzację odpowiedzi na pytania klientów. Podsumowując, Messenger to popularna aplikacja do komunikacji społecznej, oferująca wiele funkcji, takich jak wymiana wiadomości tekstowych, dzwonienie głosowe i wideorozmowy, a także chatboty dla firm.',
+// GRY
     'minecraft': 'Minecraft to popularna gra wideo, która została wydana w 2011 roku. Gracze wcielają się w rolę postaci zbudowanych z pikseli, którzy eksplorują świat wirtualny i tworzą własne struktury z bloków. <br><br> Gra oferuje kilka trybów, w tym tryb przetrwania, w którym gracze muszą zdobywać surowce i walczyć z potworami, oraz tryb kreatywny, który pozwala na nielimitowane zasoby, aby tworzyć niemal wszystko, co tylko chcesz.',
     'fortnite': 'Odpowiedź: Fortnite to gra wideo, która została wydana w 2017 roku przez firmę Epic Games. Gra jest rozgrywana w trybie wieloosobowym, a jej głównym celem jest przetrwanie w świecie pełnym potworów i innych graczy. <br><br>Gracze muszą zdobywać surowce i materiały, aby budować obronne struktury i bronie, a także współpracować z innymi graczami, aby przetrwać.',
     'league of legends': 'League of Legends to popularna gra wideo, która została wydana w 2009 roku. <br><br> Jest to gra typu MOBA (Multiplayer Online Battle Arena), w której dwie drużyny składające się z pięciu graczy walczą o kontrolę nad areną. Każdy gracz kontroluje jedną postać, która ma unikalne umiejętności i zdolności. <br><br>Gra jest bardzo konkurencyjna i wymaga od graczy taktyki, koordynacji i szybkich refleksów.',
     'gta5': 'Grand Theft Auto V to popularna gra wideo, która została wydana w 2013 roku. <br><br> Gra jest rozgrywana w trybie pojedynczego gracza lub wieloosobowego i oferuje otwarty świat, w którym gracze mogą wykonywać różne misje i wykonywać różne zadania. Gra oferuje również wiele opcji dostosowania postaci i pojazdów oraz interakcję z innymi graczami online.',
     'terraria': 'Terraria to 2D gra akcji typu sandbox, w której gracze mają do dyspozycji proceduralnie generowany świat, w którym mogą rozwijać swoje postaci, eksplorować środowisko i zbierać surowce. Gra oferuje różnorodne rodzaje rozgrywki, w tym walkę z bossami, budowanie baz i tworzenie przedmiotów, a także wiele różnych klas postaci, takich jak magowie, wojownicy czy łowcy. <br><br>Terraria umożliwia także tryb gry wieloosobowej, w którym gracze mogą współpracować lub rywalizować ze sobą. Gra jest dostępna na wiele platform, w tym PC, konsolach i urządzeniach mobilnych.',
     'roblox': 'Roblox to popularna gra online, która umożliwia użytkownikom tworzenie i dzielenie się własnymi grami, a także dołączanie do gier stworzonych przez innych użytkowników. W grze można budować swoje światy, projektować postacie, tworzyć przedmioty i wiele więcej. Roblox umożliwia graczom interakcję z innymi użytkownikami z całego świata, co czyni ją jedną z najbardziej społecznościowych gier online. W grze można grać w różne tryby, takie jak survival, battle royale, symulatory czy role-playing. <br><br>Jednym z głównych elementów gry jest tzw. Robux - wirtualna waluta, którą można zdobyć poprzez wykonywanie zadań lub zakupić za prawdziwe pieniądze. Robuxy można wykorzystać do zakupu przedmiotów w grze lub do budowania swojego świata. <br><br>Roblox cieszy się ogromną popularnością wśród dzieci i młodzieży, a także wśród dorosłych. Z powodu swojej prostoty i wielu możliwości, gra ta jest często stosowana w edukacji, jako narzędzie do nauki programowania, matematyki i innych przedmiotów.',
+
+// PAŃSTWA
     'afganistan': 'Państwo położone w Azji Południowej, graniczące z Pakistanem, Iranem, Turkmenistanem, Uzbekistanem i Tadżykistanem. Kabul jest stolicą i największym miastem kraju. Afganistan był wielokrotnie nękany przez wojny i konflikty zbrojne, co skutkowało znacznym pogorszeniem sytuacji gospodarczej i społecznej w kraju.',
     'albania': 'Państwo położone na Bałkanach, graniczące z Czarnogórą, Kosowem, Macedonią Północną i Grecją. Tirana jest stolicą i największym miastem kraju. Albania jest krajem rozwijającym się o średnim poziomie rozwoju gospodarczego i kulturowego, z pięknymi plażami nad Morzem Adriatyckim i turystyką rozwijającą się w ciągu ostatnich kilku lat.',
     'algieria': 'Państwo w północnej Afryce, graniczące z Marokiem, Tunezją, Libią, Nigrem, Mauretanią, Saharą Zachodnią i Morzem Śródziemnym. Algier jest stolicą i największym miastem kraju. Algieria jest krajem o bardzo bogatej historii i kulturze, z różnorodnymi wpływami kulturowymi i artystycznymi z wielu krajów.',
@@ -251,7 +148,6 @@ const answers = {
     'lesotho': 'państwo w Afryce Południowej, otoczone w całości przez Republikę Południowej Afryki. Maseru jest stolicą kraju i jego największym miastem. Lesotho to kraj o pięknych krajobrazach, znanym z Parku Narodowego Sehlabathebe, wodospadu Maletsunyane, Sanktuarium Echo, kulturze lesotyjskiej i festiwalu Lesotho Tourism Festival.',
     'liban': 'państwo w Azji Zachodniej, graniczące z Syrią i Izraelem. Bejrut jest stolicą kraju i jego największym miastem. Liban to kraj o pięknych krajobrazach, znanym z Jaskini Jeita, świątyni Baalbek, Muzeum Narodowego w Bejrucie, kulturze libańskiej, muzyce libańskiej i festiwalu Baalbeck International Festival.',
     'liberia': 'państwo w Afryce Zachodniej, graniczące z Wybrzeżem Kości Słoniowej, Gwineą i Sierra Leone. Monrowia jest stolicą kraju i jego największym miastem. Liberia to kraj o pięknych krajobrazach, znanym z Parku Narodowego Sapo, Parku Narodowego Mount Nimba, Wybrzeża Diamentowego, kulturze liberyjskiej, muzyce libery',
-    'libia': 'państwo w Afryce Północnej, graniczące z Tunezją, Algierią, Nigrem, Czadem, Sudanem i Egiptem. Trypolis jest stolicą kraju, a Benghazi jego drugim największym miastem. Libia to kraj o pięknych krajobrazach, znanym z Parku Narodowego Garama, Szerokiej Bramy, Muzeum Narodowego w Trypolisie, kulturze libijskiej, muzyce libijskiej i festiwalu Sahara Festival.',
+    'libia':  'państwo w Afryce Północnej, graniczące z Tunezją, Algierią, Nigrem, Czadem, Sudanem i Egiptem. Trypolis jest stolicą kraju, a Benghazi jego drugim największym miastem. Libia to kraj o pięknych krajobrazach, znanym z Parku Narodowego Garama, Szerokiej Bramy, Muzeum Narodowego w Trypolisie, kulturze libijskiej, muzyce libijskiej i festiwalu Sahara Festival.',
     'liechtenstein': 'państwo w Europie Zachodniej, graniczące z Austrią i Szwajcarią. Vaduz jest stolicą kraju i jego największym miastem. Liechtenstein to kraj o pięknych krajobrazach, znanym z Zamku Vaduz, Muzeum Narodowego Liechtensteinu, Schaaner Bucht, kulturze liechtensteińskiej, muzyce liechtensteińskiej i festiwalu Vaduz Castle Illuminations.'
-};
-//# sourceMappingURL=app.js.map
+}
