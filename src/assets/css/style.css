@@ -1,0 +1,454 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.dark {
+    --black: #fff;
+    --white: #0f0f0f;
+}
+.light {
+    --black: #0f0f0f;
+    --white: #fff;
+}
+
+html,
+body {
+    height: 100%;
+    background: #6d9ac4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.sign_up, .sign_in {
+    height: 378px;
+    width: 364px;
+    background: var(--white);
+    padding: 42px;
+    text-align: center;
+    border-radius: 8px;
+    position: relative;
+}
+.sign_up .top h1, .sign_in .top h1{
+    color: var(--black);
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 19px;
+}
+.sign_up {
+    height: 424px;
+}
+.inputs {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.inputs input {
+    height: 42px;
+    outline: none;
+    border: none;
+    background: #ececec;
+    border-radius: 2px;
+    padding: 3px 9px;
+}
+.inputs input:focus {
+    outline: 2px solid #6d9ac4;
+}
+input, input::placeholder {
+    color: #888888;
+}
+.submit {
+    margin-top: 32px;
+    width: 100%;
+}
+.submit button {
+    width: 100%;
+    height: 46px;
+    border: none;
+    border-radius: 2px;
+    background: #6d9ac4;
+    color: var(--white);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: .3s linear;
+}
+.submit button:hover {
+    border-radius: 8px;
+    background: #6fa1d1;
+}
+.error_message {
+    margin-top: 8px;
+    color: #ee0049;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+.next {
+    position: relative;
+    top: 32px;
+}
+.next a {
+    color: #6d9ac4;
+    text-decoration: none;
+}
+.next a span {
+    color: #426b92;
+}
+
+.sign_in , .sign_up{
+    display: none;
+}
+.sign_in.show, .sign_up.show {
+    display: block;
+}
+
+
+.chat {
+    height: 424px;
+    width: 624px;
+    background: #ffffff65;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px 0px rgba(58, 58, 58, 0.463);
+    position: relative;
+}
+.chat .top {
+    width: 100%;
+    height: 52px;
+    background: #426b92;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+}
+.chat .top .left span {
+    color: var(--black);
+    cursor: pointer;
+    font-weight: 500;
+}
+.chat .top .left span:hover {
+    text-decoration: underline;
+}
+.chat .top .right {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.chat .top span {
+    background: #ffffff25;
+    height: 32px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    color: var(--black);
+    padding: 0 9px;
+    font-weight: 500;
+}
+.chat .chat_messages {
+    width: 100%;
+    height: calc(100% - 52px - 52px);
+}
+.chat .chat_input {
+    height: 52px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #426b92;
+}
+.chat_input input {
+    width: calc(100% - 64px * 2);
+    position: relative;
+    top: 0;
+    padding: 3px 9px;
+    height: 42px;
+    border-radius: 8px;
+    border: none;
+    background: var(--white);
+}
+.chat_input input:focus {
+    outline: none;
+}
+.chat_input button, .chat_input label {
+    height: 42px;
+    width: 42px;
+    border: none;
+    background: #6fa1d1;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 20px;
+    border-radius: 9999px;
+    transition: .2s linear;
+}
+.chat_input button:hover {
+    background: #679acb;
+}
+.chat_input label {
+    background: #8ec7fc ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chat_input label:hover {
+    background: #81bff9;
+}
+
+.chat_messages {
+    padding: 8px;
+    position: relative;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+a.scroll_down {
+    height: 36px;
+    width: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #426b92;
+    border-radius: 9999px;
+    color: var(--white);
+    font-size: 16px;
+    position: absolute;
+    bottom: calc(8px + 52px);
+    right: 8px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: .2s linear;
+}
+a.scroll_down.show {
+    opacity: 1;
+    pointer-events: all;
+}
+.chat_messages img {
+    height: 42px;
+    border-radius: 100%;
+}
+.chat_messages span {
+    background: var(--white);
+    padding: 2px 8px;
+    border-radius: 16px;
+    color: var(--black);
+    font-size: 15px;
+    font-weight: 600;
+}
+.chat_messages .message {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.chat_messages .message p {
+    background: #ffffff65;
+    width: fit-content;
+    border-radius: 9999px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.chat_messages .message-sender {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.chat_messages .message-sender i {
+    font-size: 22px;
+    cursor: pointer;
+    position: relative;
+    top: 11.2px;
+}
+.message span img, .message span video {
+    border-radius: 16px;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: flex;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.chat {
+    display: none;
+}
+.chat.show {
+    display: block;
+}
+
+.groups {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 224px;
+    width: 600px;
+    position: fixed;
+    border-radius: 8px;
+    background: #426b92;
+    box-shadow: 0px 4px 12px 0px rgba(58, 58, 58, 0.463);
+    display: none;
+    flex-direction: column;
+}
+.groups.show {
+    display: flex;
+}
+.groups_list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.group {
+    height: 124px;
+    width: 124px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.group span {
+    padding: 3px 9px;
+    background: #ffffff25;
+    border-radius: 9999px;
+    color: var(--white);
+    font-weight: 500;
+    letter-spacing: 1px;
+    position: relative;
+    top: 8px;
+}
+.group button {
+    width: 100%;
+    border: none;
+    background: #679acb;
+    height: 32px;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .3s linear;
+}
+.group button:hover {
+    background: #6fa1d1;
+}
+
+.create_group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.create_group input, .create_group button {
+    height: 32px;
+}
+.create_group button {
+    width: 32px;
+    border-radius: 0 8px 8px 0;
+    border: none;
+    background: #679acb;
+    cursor: pointer;
+    color: var(--white);
+}
+.create_group input {
+    border-radius: 8px 0 0 8px;
+    padding: 3px 9px;
+    outline: none;
+    border: none;
+    width: 184px;
+}
+
+@media screen and (max-width: 798px) {
+    .chat, body, .groups {
+        width: calc(100% - 16px);
+    }
+}
+@media screen and (max-width: 500px) {
+    .sign_in, .sign_up {
+        width: calc(100% - 16px);
+    }
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.middle {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.middle span {
+    cursor: pointer;
+}
+
+.createPassword {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;    
+    height: 96px;
+    width: 296px;
+    border-radius: 8px;
+    background: #426b92;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+}
+.createPassword div {
+    display: flex;
+    flex-direction: row;
+}
+.createPassword div button {
+    width: 32px;
+    border-radius: 0 4px 4px 0;
+    border: none;
+    background: var(--white);
+    cursor: pointer;
+    transition: .3s linear;
+}
+.createPassword div button:hover {
+    background: #ececec;
+}
+.createPassword input {
+    height: 32px;
+    border: none;
+    outline: none;
+    border-radius: 4px 0 0 4px;
+    padding: 3px 9px;
+    width: calc(100% - 16px);
+}
+.createPassword.show {
+    display: flex;
+}
+.createPassword span {
+    color: #ee0049;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0;
+}
+.createPassword span.show {
+    opacity: 1;
+}
+#messagesOnGroup {
+    color: #fff;
+}
