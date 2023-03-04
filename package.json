@@ -1,14 +1,5 @@
 {
-  "name": "online-chat",
-  "version": "1.0.0",
-  "description": "A online chat created with html/css/js",
-  "main": "./src/scripts/script.js",
-  "scripts": {
-    "compile": "tsc --watch"
-  },
-  "author": "Adiksuu",
-  "license": "ISC",
   "dependencies": {
-    "firebase": "^9.17.1"
+    "typescript": "^4.9.5"
   }
 }
