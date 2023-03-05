@@ -17,7 +17,7 @@ Math:
 ---
 
 Latest command:
-![image](https://user-images.githubusercontent.com/75419729/222950006-64b95949-36e9-4823-aaf7-27979f92dcba.png)
+![image](https://user-images.githubusercontent.com/75419729/222953553-5ea30b2a-9e24-4784-8583-b05644aaeb2b.png)
 
 ---
 
