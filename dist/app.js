@@ -1,3 +1,16 @@
+let counter = 0;
+function _count(question) {
+    if (question.includes('+')) {
+        counter++;
+    }
+    else if (question.includes('-')) {
+        counter--;
+    }
+    else if (question.includes('reset')) {
+        counter = 0;
+    }
+    answer = `Liczba wynosi teraz: ${counter}`;
+}
 function _data() {
     const date = new Date();
     if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
@@ -16,8 +29,78 @@ function _help() {
 function _package() {
     answer = `Twój pakiet to: ${tier}`;
 }
+function _random() {
+    let randomMax = 10 + 1;
+    let randomNum = Math.floor(Math.random() * randomMax);
+    answer = `Wylosowany numer to: ${randomNum}`;
+}
 function _repeat(question) {
     answer = question.substring(8);
+}
+function _response(question) {
+    const random = Math.floor(Math.random() * 6);
+    let res;
+    if (random == 0) {
+        res = 'Tak';
+    }
+    else if (random == 1) {
+        res = 'Nie';
+    }
+    else if (random == 2) {
+        res = 'Nie wiem';
+    }
+    else if (random == 3) {
+        res = 'Być może';
+    }
+    else if (random == 4) {
+        res = 'Chyba tak';
+    }
+    else if (random == 5) {
+        res = 'Chyba nie';
+    }
+    if (question.includes('/response')) {
+        question = question.substring(10);
+    }
+    else if (question.includes('/r')) {
+        question = question.substring(3);
+    }
+    else {
+        question = question.substring(11);
+    }
+    answer = `Odpowiedzią na twoje pytanie "${question}" to: ${res}`;
+}
+function _rps(question) {
+    let botSelect = Math.floor(Math.random() * 3);
+    if (botSelect == 0 && question.includes('rock')) {
+        answer = `Bot też wybrał kamień! Remis!`;
+    }
+    else if (botSelect == 0 && question.includes('paper')) {
+        answer = `Bot wybrał kamień! Wygrywasz!`;
+    }
+    else if (botSelect == 0 && question.includes('scissors')) {
+        answer = `Bot wybrał kamień! Przegrywasz!`;
+    }
+    else if (botSelect == 1 && question.includes('rock')) {
+        answer = `Bot wybrał papier! Przegrywasz!`;
+    }
+    else if (botSelect == 1 && question.includes('paper')) {
+        answer = `Bot też wybrał papier! Remis!`;
+    }
+    else if (botSelect == 1 && question.includes('scissors')) {
+        answer = `Bot wybrał papier! Wygrywasz!`;
+    }
+    else if (botSelect == 2 && question.includes('rock')) {
+        answer = `Bot wybrał nożyce! Wygrywasz!`;
+    }
+    else if (botSelect == 2 && question.includes('paper')) {
+        answer = `Bot wybrał nożyce! Przegrywasz!`;
+    }
+    else if (botSelect == 2 && question.includes('scissors')) {
+        answer = `Bot też wybrał nożyce! Remis!`;
+    }
+    else {
+        answer = '<i class="fas fa-circle-exclamation"></i> Wystąpił błąd! Spróbuj ponownie';
+    }
 }
 const body = document.querySelector('body');
 function _theme() {
@@ -38,7 +121,7 @@ function _time() {
         answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
     }
 }
-const news = 'Wyświetlanie pakietu bota (domyślnie "Standard"). <br><br>Nową komendę /news która wyświetla ostatnio dodane nowości. <br><br> Nowa komenda /package wyświetlająca aktualny pakiet bota <br><br> Nowa komenda /youtube <wyszukaj>, która wyszukuję podaną frazę a następnie ją wyświetla';
+const news = 'Nową komendę /response "pytanie", bot odpowiada na podane pytanie w bardzo zwięzły sposób :D <br><br> Poprawiono kilka błędów - literówki <br><br> Nowa komenda /count "+/-/reset", która umożliwia bawienie się liczbą (domyślnie 0), którą możesz zwiększać, zmniejszać oraz resetować do stanu pierwotnego <br><br> Nowa komenda /rps <rock/paper/scissors>, która umożliwia zagranie w kamień-papier-nożyce z botem! <br><br> Nowa komenda /random, która losuje numer od 0-10';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -48,7 +131,7 @@ function _version() {
 function _youtube(question) {
     let searchQuery = question.substring(9);
     if (searchQuery.length == searchQuery.split(' ').length - 1 || searchQuery == '') {
-        answer = `Nie znaleiono odpowiednich wyników dla podanej nazwy!`;
+        answer = `Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
     }
     else {
         answer = `Wyszukano filmy w serwisie YouTube: <a href="https://www.youtube.com/results?search_query=${searchQuery}">zobacz</a>`;
@@ -64,7 +147,7 @@ form.addEventListener('submit', function (event) {
     }
 });
 function failedQuestion() {
-    answer = 'Niestety ale nie udało mi się znaleść odpowiedzi na twoje pytanie, sprawdź czy w mojej dokumentacji znajduję się podane przez ciebie pytanie. Jeśli tak, niezwłocznie zgłoś nam to, że nie wyświetlam odpowiedzi! Jeśli nie, spróbuj nam ją zaproponować!';
+    answer = '<i class="fas fa-circle-exclamation"></i> Niestety ale nie udało mi się znaleść odpowiedzi na twoje pytanie, sprawdź czy w mojej dokumentacji znajduję się podane przez ciebie pytanie. Jeśli tak, niezwłocznie zgłoś nam to, że nie wyświetlam odpowiedzi! Jeśli nie, spróbuj nam ją zaproponować!';
 }
 function checkAnswer(question) {
     if (!question.startsWith('/')) {
@@ -89,32 +172,44 @@ function checkAnswer(question) {
         }
     }
     else {
-        if (question.includes('/data') || question.includes('/date')) {
+        if (question.includes('data') || question.includes('date')) {
             _data();
         }
-        else if (question.includes('/version') || question.includes('/ver') || question.includes('/wersja')) {
+        else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version();
         }
-        else if (question.includes('/powtórz') || question.includes('/repeat')) {
+        else if (question.includes('powtórz') || question.includes('repeat')) {
             _repeat(question);
         }
-        else if (question.includes('/help') || question.includes('/pomoc')) {
+        else if (question.includes('help') || question.includes('pomoc')) {
             _help();
         }
         else if (question.includes('theme') || question.includes('motyw')) {
             _theme();
         }
-        else if (question.includes('/time') || question.includes('/czas')) {
+        else if (question.includes('time') || question.includes('czas')) {
             _time();
         }
-        else if (question.includes('/news') || question.includes('/nowości')) {
+        else if (question.includes('news') || question.includes('nowości') || question.includes('zmiany') || question.includes('changes')) {
             _update();
         }
-        else if (question.includes('/package') || question.includes('/pakiet')) {
+        else if (question.includes('package') || question.includes('pakiet')) {
             _package();
         }
-        else if (question.includes('/youtube')) {
+        else if (question.includes('youtube')) {
             _youtube(question);
+        }
+        else if (question.includes('random') || question.includes('los')) {
+            _random();
+        }
+        else if (question.includes('rps')) {
+            _rps(question);
+        }
+        else if (question.includes('response') || question.includes('odpowiedz') || question.includes('r')) {
+            _response(question);
+        }
+        else if (question.includes('count') || question.includes('licz')) {
+            _count(question);
         }
         else {
             failedQuestion();
@@ -138,8 +233,8 @@ function createMessage(title) {
 const update_date = document.querySelector('#update_date');
 const update_version = document.querySelector('#update_version');
 const bot_tier = document.querySelector('#bot_tier');
-const version = 'v1.0.2 [Beta]';
-const updated = '04.03.2023';
+const version = 'v1.0.3 [Beta]';
+const updated = '05.03.2023';
 const tier = 'Standard';
 function update() {
     update_date.innerHTML = updated;
