@@ -142,7 +142,33 @@ function _time() {
         answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
     }
 }
-const news = 'Nowa komenda /socials, która wyświetla moje sociale <br><br>Nowa komenda /coinflip, umożliwia ona rzucenie monetą z 50% szansą na dany los <br><br>Nowa komenda /clear, czyści ona wątek z poprzednich wiadomości <br><br>Nowa komenda /wikipedia "nazwa", która umożliwia wyszukanie podanej frazy w wikipedii <br><br> Nowa komenda /google "nazwa", która umożliwia wyszukanie podanej frazy w wyszukiwarce google';
+function _todo() {
+    const todo = [
+        {
+            todos: '1. Wprowadzić funkcjonalność płatnego pakietu premium, który będzie wprowadzał więcej funkcji, komend oraz lepsze UI <i class="fas fa-ban"></i>'
+        },
+        {
+            todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-ban"></i>'
+        },
+        {
+            todos: '3. Dodać funkcjonalność losowych odpowiedzi na dane pytanie <i class="fas fa-ban"></i>'
+        },
+        {
+            todos: '4. Podłączyć stronę pod bazę danych, tak aby wątki były zapisywane w historii <i class="fas fa-ban"></i>'
+        },
+        {
+            todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-ban"></i>'
+        },
+        {
+            todos: '6. Dodać funkcjonalność podpowiadania pytań oraz komend w inpucie <i class="fas fa-ban"></i>'
+        }
+    ];
+    answer = '';
+    for (let index = 0; index < todo.length; index++) {
+        answer += `${todo[index].todos}<br>`;
+    }
+}
+const news = 'Animacja usuwania liter z inputa po wpisaniu wiadomości :D <br><br>Nowa komenda /todo, która wyświetla listę rzeczy, którę są w planach do dodania do ChatBota';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -183,7 +209,12 @@ form.addEventListener('submit', function (event) {
     event.preventDefault();
     if ((input.value.length - input.value.split(' ').length - 1) > -2) {
         createMessage(input.value);
-        input.value = '';
+        let interval = window.setInterval(() => {
+            input.value = input.value.substring(1);
+            if (input.value.length == 0) {
+                clearInterval(interval);
+            }
+        }, 20);
     }
 });
 function failedQuestion() {
@@ -217,6 +248,9 @@ function checkAnswer(question) {
         }
         else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version();
+        }
+        else if (question.includes('todo')) {
+            _todo();
         }
         else if (question.includes('powtórz') || question.includes('repeat')) {
             _repeat(question);
@@ -288,7 +322,7 @@ function createMessage(title) {
 const update_date = document.querySelector('#update_date');
 const update_version = document.querySelector('#update_version');
 const bot_tier = document.querySelector('#bot_tier');
-const version = 'v1.0.4 [Beta]';
+const version = 'v1.0.5 [Beta]';
 const updated = '05.03.2023';
 const tier = 'Standard';
 function update() {

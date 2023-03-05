@@ -24,6 +24,8 @@ function checkAnswer(question: string) {
             _data()
         } else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version()
+        } else if (question.includes('todo')) {
+            _todo()
         } else if (question.includes('powtórz') || question.includes('repeat')) {
             _repeat(question)
         } else if (question.includes('help') || question.includes('pomoc')) {
