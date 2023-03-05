@@ -30,6 +30,10 @@ function checkAnswer(question: string) {
             _help()
         } else if (question.includes('theme') || question.includes('motyw')) {
             _theme()
+        } else if (question.includes('wikipedia')) {
+            _wikipedia(question)
+        } else if (question.includes('google')) {
+            _google(question)
         } else if (question.includes('time') || question.includes('czas')) {
             _time()
         } else if (question.includes('news') || question.includes('nowości') || question.includes('zmiany') || question.includes('changes')) {
@@ -38,14 +42,20 @@ function checkAnswer(question: string) {
             _package()
         } else if (question.includes('youtube')) {
             _youtube(question)
+        } else if (question.includes('clear') || question.includes('wyczysc') || question.includes('czyszczenie')) {
+            _clear()
         } else if (question.includes('random') || question.includes('los')) {
             _random()
+        } else if (question.includes('coinflip') || question.includes('rzut monetą')) {
+            _flip()
         } else if (question.includes('rps')) {
             _rps(question)
         } else if (question.includes('response') || question.includes('odpowiedz') || question.includes('r')) {
             _response(question)
         } else if (question.includes('count') || question.includes('licz')) {
             _count(question)
+        } else if (question.includes('socials') || question.includes('sociale')) {
+            _socials()
         } else {
             failedQuestion()
         }

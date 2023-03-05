@@ -1,3 +1,14 @@
+function _flip() {
+    const fliped = Math.floor(Math.random() * 2);
+    let flip;
+    if (fliped == 0) {
+        flip = 'Orzeł';
+    }
+    else if (fliped == 1) {
+        flip = 'Reszka';
+    }
+    answer = `Rzut monetą (50/50) wskazuje na: ${flip}`;
+}
 let counter = 0;
 function _count(question) {
     if (question.includes('+')) {
@@ -10,24 +21,6 @@ function _count(question) {
         counter = 0;
     }
     answer = `Liczba wynosi teraz: ${counter}`;
-}
-function _data() {
-    const date = new Date();
-    if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
-        answer = `Aktualna data: ${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-        if (date.getDate() > 0 && date.getDate() < 9) {
-            answer = `Aktualna data: 0${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
-        }
-    }
-    else {
-        answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-    }
-}
-function _help() {
-    answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
-}
-function _package() {
-    answer = `Twój pakiet to: ${tier}`;
 }
 function _random() {
     let randomMax = 10 + 1;
@@ -102,6 +95,13 @@ function _rps(question) {
         answer = '<i class="fas fa-circle-exclamation"></i> Wystąpił błąd! Spróbuj ponownie';
     }
 }
+function _clear() {
+    chat.innerHTML = '';
+    answer = '<i class="fas fa-check-circle"></i> Pomyślnie wyczyszczono chat!';
+}
+function _help() {
+    answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
+}
 const body = document.querySelector('body');
 function _theme() {
     body.classList.toggle('light');
@@ -112,6 +112,27 @@ function _theme() {
         answer = '<i class="fas fa-moon"></i> Zmieniono motyw na: ciemny';
     }
 }
+function _version() {
+    answer = `Aktualna moja wersja to: ${version}, wprowadzona ${updated}`;
+}
+function _data() {
+    const date = new Date();
+    if ((date.getMonth() + 1) > 0 && (date.getMonth() + 1) < 9) {
+        answer = `Aktualna data: ${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
+        if (date.getDate() > 0 && date.getDate() < 9) {
+            answer = `Aktualna data: 0${date.getDate()}.0${date.getMonth() + 1}.${date.getFullYear()}`;
+        }
+    }
+    else {
+        answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    }
+}
+function _package() {
+    answer = `Twój pakiet to: ${tier}`;
+}
+function _socials() {
+    answer = `<a href="https://github.com/Adiksuu"><i class="fab fa-github"></i> Github</a> - Moje repozytoria z projektami<br><a href="https://behance.com/Adiksuu"><i class="fab fa-behance-square"></i> Behance</a> - Moje prace graficzne<br><a href="https://patreon.com/Adiksuu"><i class="fab fa-patreon"></i> Patreon</a> - Możliwość wsparcia :D`;
+}
 function _time() {
     const date = new Date();
     if (date.getMinutes() <= 9) {
@@ -121,20 +142,39 @@ function _time() {
         answer = `Aktualna godzina: ${date.getHours()}:${date.getMinutes()}`;
     }
 }
-const news = 'Nową komendę /response "pytanie", bot odpowiada na podane pytanie w bardzo zwięzły sposób :D <br><br> Poprawiono kilka błędów - literówki <br><br> Nowa komenda /count "+/-/reset", która umożliwia bawienie się liczbą (domyślnie 0), którą możesz zwiększać, zmniejszać oraz resetować do stanu pierwotnego <br><br> Nowa komenda /rps <rock/paper/scissors>, która umożliwia zagranie w kamień-papier-nożyce z botem! <br><br> Nowa komenda /random, która losuje numer od 0-10';
+const news = 'Nowa komenda /socials, która wyświetla moje sociale <br><br>Nowa komenda /coinflip, umożliwia ona rzucenie monetą z 50% szansą na dany los <br><br>Nowa komenda /clear, czyści ona wątek z poprzednich wiadomości <br><br>Nowa komenda /wikipedia "nazwa", która umożliwia wyszukanie podanej frazy w wikipedii <br><br> Nowa komenda /google "nazwa", która umożliwia wyszukanie podanej frazy w wyszukiwarce google';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
-function _version() {
-    answer = `Aktualna moja wersja to: ${version}, wprowadzona ${updated}`;
+function _google(question) {
+    question = question.substring(8);
+    let googleSearch;
+    if (question.length == question.split(' ').length - 1 || question == '') {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
+    }
+    else {
+        googleSearch = `https://www.google.com/search?q=${question}`;
+        answer = `<i class="fab fa-chrome"></i> Wyszukano artykuły w serwisie Google: <a href='${googleSearch}'>Zobacz</a>`;
+    }
+}
+function _wikipedia(question) {
+    question = question.substring(11);
+    let wikiSearch;
+    if (question.length == question.split(' ').length - 1 || question == '') {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
+    }
+    else {
+        wikiSearch = `https://pl.wikipedia.org/wiki/${question}`;
+        answer = `<i class="fab fa-wikipedia-w"></i> Wyszukano artykuły w serwisie Wikipedia: <a href='${wikiSearch}'>Zobacz</a>`;
+    }
 }
 function _youtube(question) {
     let searchQuery = question.substring(9);
     if (searchQuery.length == searchQuery.split(' ').length - 1 || searchQuery == '') {
-        answer = `Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
     }
     else {
-        answer = `Wyszukano filmy w serwisie YouTube: <a href="https://www.youtube.com/results?search_query=${searchQuery}">zobacz</a>`;
+        answer = `<i class="fab fa-youtube"></i> Wyszukano filmy w serwisie YouTube: <a href="https://www.youtube.com/results?search_query=${searchQuery}">zobacz</a>`;
     }
 }
 const form = document.querySelector('#input_form');
@@ -187,6 +227,12 @@ function checkAnswer(question) {
         else if (question.includes('theme') || question.includes('motyw')) {
             _theme();
         }
+        else if (question.includes('wikipedia')) {
+            _wikipedia(question);
+        }
+        else if (question.includes('google')) {
+            _google(question);
+        }
         else if (question.includes('time') || question.includes('czas')) {
             _time();
         }
@@ -199,8 +245,14 @@ function checkAnswer(question) {
         else if (question.includes('youtube')) {
             _youtube(question);
         }
+        else if (question.includes('clear') || question.includes('wyczysc') || question.includes('czyszczenie')) {
+            _clear();
+        }
         else if (question.includes('random') || question.includes('los')) {
             _random();
+        }
+        else if (question.includes('coinflip') || question.includes('rzut monetą')) {
+            _flip();
         }
         else if (question.includes('rps')) {
             _rps(question);
@@ -210,6 +262,9 @@ function checkAnswer(question) {
         }
         else if (question.includes('count') || question.includes('licz')) {
             _count(question);
+        }
+        else if (question.includes('socials') || question.includes('sociale')) {
+            _socials();
         }
         else {
             failedQuestion();
@@ -233,7 +288,7 @@ function createMessage(title) {
 const update_date = document.querySelector('#update_date');
 const update_version = document.querySelector('#update_version');
 const bot_tier = document.querySelector('#bot_tier');
-const version = 'v1.0.3 [Beta]';
+const version = 'v1.0.4 [Beta]';
 const updated = '05.03.2023';
 const tier = 'Standard';
 function update() {
