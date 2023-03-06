@@ -112,6 +112,28 @@ function _theme() {
         answer = '<i class="fas fa-moon"></i> Zmieniono motyw na: ciemny';
     }
 }
+function changeThreadTo(thread) {
+    currentThread = parseInt(thread);
+    window.location.reload();
+}
+function _changeCurrentThread(question) {
+    question = question.substring(8);
+    if (firebase.auth().currentUser) {
+        if (question == '') {
+            answer = `<i class="fas fa-circle-exclamation"></i> Nie podałeś numeru wątku!`;
+            return;
+        }
+        if ((parseInt(question) > threads.children.length) || parseInt(question) == 0) {
+            answer = `<i class="fas fa-circle-exclamation"></i> Wątek <span id="underline">${question}</span> nie istnieje!`;
+        }
+        else {
+            answer = `<i class="fas fa-circle-check"></i> Zmień wątek na <span id="underline" onclick='changeThreadTo(${question})'>${question}</span>`;
+        }
+    }
+    else {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie masz uprawnień do korzystania z tej komendy! Musisz posiadać pakiet Premium! Aktualny: ${tier}`;
+    }
+}
 function _version() {
     answer = `Aktualna moja wersja to: ${version}, wprowadzona ${updated}`;
 }
@@ -168,7 +190,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = 'Wprowadzono system pakietu premium, na czas trwania wersji [Beta], każdy użytkownik ma dostęp do tego pakietu, <br><br> wystarczy że się zarejestruje! Po upływie czasu trwania wersji [Beta] ChatBota, pakiet premium zostanie ograniczony, ponieważ będzie go można otrzymać wyłącznie go kupując za 5$ (Cena tymczasowa). <br><br> Pakiet wprowadza wiele nowych funkcjonalności takich np. jak zapisywanie wątków, możliwość ich tworzenia/usuwania, szybka zmiana motywu strony (jasny/ciemny) i wiele więcej!';
+const news = '<br>[v1.0.6-v1.0.7]: Wprowadzono system pakietu premium, na czas trwania wersji [Beta], każdy użytkownik ma dostęp do tego pakietu, <br><br> wystarczy że się zarejestruje! Po upływie czasu trwania wersji [Beta] ChatBota, pakiet premium zostanie ograniczony, ponieważ będzie go można otrzymać wyłącznie go kupując za 5$ (Cena tymczasowa). <br><br> Pakiet wprowadza wiele nowych funkcjonalności takich np. jak zapisywanie wątków, możliwość ich tworzenia/usuwania, szybka zmiana motywu strony (jasny/ciemny) i wiele więcej! <br><br>[v1.0.7]: Wprowadzono poprawkę, dla ładowania wiadomości, wcześniej po załadowaniu wiadomości zostawały one ponownie wczytywane z plików chatbota co prowadziło np. w momencie użycia /rps rock za pierwszym razem np. się wygrało a po odświeżeniu jeszcze raz było losowane i np. się przegrało, teraz jest już to statyczne! :D <br><br>Nowa komenda /thread dostępna tylko dla użytkowników, którzy posiadają pakiet premium! Umożliwia ona szybkie przemieszczanie się pomiędzy wątkami np. "/thread 2" przeniesie Ciebie do 2wątku, jeśli podasz wątek, który nie istnieje, dostaniesz informacje zwrotną, że podany wątek nie istnieje!';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -258,6 +280,9 @@ function checkAnswer(question) {
         }
         else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version();
+        }
+        else if (question.includes('/thread')) {
+            _changeCurrentThread(question);
         }
         else if (question.includes('todo')) {
             _todo();
@@ -401,7 +426,7 @@ function changeForm(form) {
         window.location.search = '?login';
     }
 }
-function loadMessage(title) {
+function loadMessage(title, answer) {
     let message = document.createElement("div");
     title = title.toLowerCase();
     checkAnswer(title);
@@ -420,7 +445,7 @@ function loadMessages() {
         let messagesCount = snapshot.numChildren();
         for (let index = 1; index < messagesCount; index++) {
             firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${index}`).once("value").then(function (snapshot) {
-                loadMessage(snapshot.val().question);
+                loadMessage(snapshot.val().question, snapshot.val().answer);
             });
         }
     });
@@ -467,7 +492,7 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.0.6 [Beta]";
+const version = "v1.0.7 [Beta]";
 const updated = "06.03.2023";
 let tier = "Standard";
 function update() {

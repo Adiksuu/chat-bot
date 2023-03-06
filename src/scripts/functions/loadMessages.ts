@@ -1,10 +1,11 @@
-function loadMessage(title: any) {
+function loadMessage(title: any, answer: any) {
     let message = document.createElement("div");
 
   title = title.toLowerCase()
   checkAnswer(title)
 
   message.classList.add("message");
+  
   message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
 
   chat.appendChild(message);
@@ -24,7 +25,7 @@ function loadMessages() {
         for (let index = 1; index < messagesCount; index++) {
           firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${index}`).once("value").then(function (snapshot: any) { 
             // chat.innerHTML = ''
-            loadMessage(snapshot.val().question)
+            loadMessage(snapshot.val().question, snapshot.val().answer)
           })            
         }
     })

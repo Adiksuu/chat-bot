@@ -337,3 +337,8 @@ section.user.show {
 #log_validation.show,#reg_validation.show {
     opacity: 1;
 }
+span#underline {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #10A37F;
+}
