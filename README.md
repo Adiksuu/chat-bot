@@ -19,8 +19,13 @@ Math:
 Latest command:
 ![image](https://user-images.githubusercontent.com/75419729/222953553-5ea30b2a-9e24-4784-8583-b05644aaeb2b.png)
 
+How to register/login:
+
+https://user-images.githubusercontent.com/75419729/223143599-1b850bb0-34a8-4b92-9f6e-18b49eaecfbc.mp4
+
 ---
 
 ### COMMANDS LIST:
 
 Docs: comming soon...  
+
