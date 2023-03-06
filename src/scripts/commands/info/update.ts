@@ -1,4 +1,4 @@
-const news: string = 'Animacja usuwania liter z inputa po wpisaniu wiadomości :D <br><br>Nowa komenda /todo, która wyświetla listę rzeczy, którę są w planach do dodania do ChatBota' 
+const news: string = 'Wprowadzono system pakietu premium, na czas trwania wersji [Beta], każdy użytkownik ma dostęp do tego pakietu, <br><br> wystarczy że się zarejestruje! Po upływie czasu trwania wersji [Beta] ChatBota, pakiet premium zostanie ograniczony, ponieważ będzie go można otrzymać wyłącznie go kupując za 5$ (Cena tymczasowa). <br><br> Pakiet wprowadza wiele nowych funkcjonalności takich np. jak zapisywanie wątków, możliwość ich tworzenia/usuwania, szybka zmiana motywu strony (jasny/ciemny) i wiele więcej!' 
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`
 }

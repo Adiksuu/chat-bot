@@ -145,7 +145,7 @@ function _time() {
 function _todo() {
     const todo = [
         {
-            todos: '1. Wprowadzić funkcjonalność płatnego pakietu premium, który będzie wprowadzał więcej funkcji, komend oraz lepsze UI <i class="fas fa-ban"></i>'
+            todos: '1. Wprowadzić funkcjonalność płatnego pakietu premium, który będzie wprowadzał więcej funkcji, komend oraz lepsze UI <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-ban"></i>'
@@ -154,7 +154,7 @@ function _todo() {
             todos: '3. Dodać funkcjonalność losowych odpowiedzi na dane pytanie <i class="fas fa-ban"></i>'
         },
         {
-            todos: '4. Podłączyć stronę pod bazę danych, tak aby wątki były zapisywane w historii <i class="fas fa-ban"></i>'
+            todos: '4. Podłączyć stronę pod bazę danych, tak aby wątki były zapisywane w historii <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-ban"></i>'
@@ -168,7 +168,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = 'Animacja usuwania liter z inputa po wpisaniu wiadomości :D <br><br>Nowa komenda /todo, która wyświetla listę rzeczy, którę są w planach do dodania do ChatBota';
+const news = 'Wprowadzono system pakietu premium, na czas trwania wersji [Beta], każdy użytkownik ma dostęp do tego pakietu, <br><br> wystarczy że się zarejestruje! Po upływie czasu trwania wersji [Beta] ChatBota, pakiet premium zostanie ograniczony, ponieważ będzie go można otrzymać wyłącznie go kupując za 5$ (Cena tymczasowa). <br><br> Pakiet wprowadza wiele nowych funkcjonalności takich np. jak zapisywanie wątków, możliwość ich tworzenia/usuwania, szybka zmiana motywu strony (jasny/ciemny) i wiele więcej!';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -216,6 +216,16 @@ form.addEventListener('submit', function (event) {
             }
         }, 20);
     }
+});
+const reg_form = document.querySelector('#reg_form');
+const log_form = document.querySelector('#log_form');
+reg_form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    register();
+});
+log_form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    login();
 });
 function failedQuestion() {
     answer = '<i class="fas fa-circle-exclamation"></i> Niestety ale nie udało mi się znaleść odpowiedzi na twoje pytanie, sprawdź czy w mojej dokumentacji znajduję się podane przez ciebie pytanie. Jeśli tak, niezwłocznie zgłoś nam to, że nie wyświetlam odpowiedzi! Jeśli nie, spróbuj nam ją zaproponować!';
@@ -306,6 +316,7 @@ function checkAnswer(question) {
     }
 }
 let answer;
+let currentThread = 1;
 const chat = document.querySelector(".chat");
 function createMessage(title) {
     let message = document.createElement("div");
@@ -318,14 +329,171 @@ function createMessage(title) {
     window.setTimeout(() => {
         message.classList.add('anim');
     }, 150);
+    let cookieData = document.cookie.split(";").map((c) => c.trim());
+    for (let i = 0; i < cookieData.length; i++) {
+        if (cookieData[i].startsWith("sessionData=")) {
+            const userId = firebase.auth().currentUser.uid;
+            let messageInfo = {
+                question: title,
+                answer: answer
+            };
+            firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot) {
+                let messageId = snapshot.numChildren();
+                firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${messageId}`).set(messageInfo);
+            });
+        }
+    }
 }
-const update_date = document.querySelector('#update_date');
-const update_version = document.querySelector('#update_version');
-const bot_tier = document.querySelector('#bot_tier');
-const version = 'v1.0.5 [Beta]';
-const updated = '05.03.2023';
-const tier = 'Standard';
+const threads = document.querySelector('.threads');
+function createThreadNow() {
+    let thread = document.createElement('p');
+    thread.innerHTML = `<i class="fa-regular fa-comment-alt"></i>`;
+    for (let index = 0; index < threads.children.length; index++) {
+        threads.children[index].classList.remove('active');
+    }
+    threads.appendChild(thread);
+    threads.scrollTop = threads.scrollHeight;
+    reloadThreads();
+    threadDb();
+}
+function createThread() {
+    let thread = document.createElement('p');
+    thread.innerHTML = `<i class="fa-regular fa-comment-alt"></i>`;
+    threads.appendChild(thread);
+    threads.scrollTop = threads.scrollHeight;
+    currentThread = threads.children.length;
+    reloadThreads();
+    threadDb();
+    loadMessages();
+    for (let index = 0; index < threads.children.length; index++) {
+        threads.children[index].classList.remove('active');
+    }
+    let thActive = currentThread - 1;
+    threads.children[thActive].classList.add('active');
+}
+function createThreadEmpty() {
+    let thread = document.createElement('p');
+    thread.innerHTML = `<i class="fa-regular fa-comment-alt"></i>`;
+    threads.appendChild(thread);
+    threads.scrollTop = threads.scrollHeight;
+}
+function threadDb() {
+    const userId = firebase.auth().currentUser.uid;
+    const threadInfo = {
+        id: currentThread
+    };
+    firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).update(threadInfo);
+}
+function deleteThreads() {
+    const userId = firebase.auth().currentUser.uid;
+    firebase.database().ref(`users/${userId}/threads/`).set('');
+    currentThread = 1;
+    createThreadNow();
+    threads.innerHTML = `<p class=""><i class="fa-regular fa-comment-alt"></i></p>`;
+    threads.children[0].classList.add('active');
+    loadMessages();
+}
+function changeForm(form) {
+    if (form == 0) {
+        window.location.search = '?register';
+    }
+    else if (form == 1) {
+        window.location.search = '?login';
+    }
+}
+function loadMessage(title) {
+    let message = document.createElement("div");
+    title = title.toLowerCase();
+    checkAnswer(title);
+    message.classList.add("message");
+    message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
+    chat.appendChild(message);
+    chat.scrollTop = chat.scrollHeight;
+    window.setTimeout(() => {
+        message.classList.add('anim');
+    }, 150);
+}
+function loadMessages() {
+    const userId = firebase.auth().currentUser.uid;
+    chat.innerHTML = '';
+    firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot) {
+        let messagesCount = snapshot.numChildren();
+        for (let index = 1; index < messagesCount; index++) {
+            firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${index}`).once("value").then(function (snapshot) {
+                loadMessage(snapshot.val().question);
+            });
+        }
+    });
+}
+function loadThreads() {
+    const userId = firebase.auth().currentUser.uid;
+    firebase.database().ref(`users/${userId}/threads/`).once("value").then(function (snapshot) {
+        let threadsCount = snapshot.numChildren();
+        for (let index = 0; index < threads.children.length; index++) {
+            threads.children[index].classList.remove('active');
+        }
+        for (let index = 1; index < threadsCount; index++) {
+            createThreadEmpty();
+            reloadThreads();
+        }
+        window.setTimeout(() => {
+            threads.children[currentThread - 1].classList.add('active');
+        }, 1000);
+    });
+}
+const main = document.querySelector('.main');
+window.setInterval(() => {
+    if (tier == 'Premium') {
+        main.classList.add('premium');
+    }
+    else if (tier == 'Standard') {
+        main.classList.remove('premium');
+    }
+});
+let threadAll = document.querySelectorAll('.threads p');
+function reloadThreads() {
+    threadAll = document.querySelectorAll('.threads p');
+    threadAll.forEach((p, index) => {
+        p.addEventListener('click', () => {
+            currentThread = index + 1;
+            for (let index = 0; index < threads.children.length; index++) {
+                threads.children[index].classList.remove('active');
+            }
+            loadMessages();
+            window.location.reload();
+        });
+    });
+}
+const update_date = document.querySelector("#update_date");
+const update_version = document.querySelector("#update_version");
+const bot_tier = document.querySelector("#bot_tier");
+const version = "v1.0.6 [Beta]";
+const updated = "06.03.2023";
+let tier = "Standard";
 function update() {
+    let cookieData = document.cookie.split(";").map((c) => c.trim());
+    for (let i = 0; i < cookieData.length; i++) {
+        if (cookieData[i].startsWith("sessionData=")) {
+            tier = "Premium";
+            window.setTimeout(() => {
+                loadMessages();
+                loadThreads();
+                if (threads.children.length == 0) {
+                    createThreadNow();
+                }
+                let cookieData = document.cookie.split(";").map((c) => c.trim());
+                for (let i = 0; i < cookieData.length; i++) {
+                    if (cookieData[i].startsWith("sessionData=")) {
+                        var sessionData = JSON.parse(cookieData[i].split("=")[1]);
+                        currentThread = sessionData.thread;
+                    }
+                }
+            }, 1500);
+        }
+        else {
+            tier = "Standard";
+        }
+    }
     update_date.innerHTML = updated;
     update_version.innerHTML = version;
     bot_tier.innerHTML = tier;
@@ -475,4 +643,184 @@ const answers = {
     'libia': 'państwo w Afryce Północnej, graniczące z Tunezją, Algierią, Nigrem, Czadem, Sudanem i Egiptem. Trypolis jest stolicą kraju, a Benghazi jego drugim największym miastem. Libia to kraj o pięknych krajobrazach, znanym z Parku Narodowego Garama, Szerokiej Bramy, Muzeum Narodowego w Trypolisie, kulturze libijskiej, muzyce libijskiej i festiwalu Sahara Festival.',
     'liechtenstein': 'państwo w Europie Zachodniej, graniczące z Austrią i Szwajcarią. Vaduz jest stolicą kraju i jego największym miastem. Liechtenstein to kraj o pięknych krajobrazach, znanym z Zamku Vaduz, Muzeum Narodowego Liechtensteinu, Schaaner Bucht, kulturze liechtensteińskiej, muzyce liechtensteińskiej i festiwalu Vaduz Castle Illuminations.'
 };
+function login() {
+    let log_email = document.querySelector("#log_email");
+    let log_password = document.querySelector("#log_password");
+    const log_validation = document.querySelector("#log_validation");
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    let currentDate = `Day: ${day}.${month}.${year} Time: ${hour}:${minutes}`;
+    firebase
+        .auth()
+        .signInWithEmailAndPassword(log_email.value, log_password.value)
+        .then(function (user) {
+        var user = firebase.auth().currentUser;
+        var database_ref = firebase.database().ref();
+        var user_data = {
+            last_login: currentDate,
+        };
+        database_ref.child("users/" + user.uid + "/info/").update(user_data);
+    })
+        .catch(function (error) {
+        if (error.code === "auth/wrong-password") {
+            log_validation.innerHTML = "Błędne hasło!";
+            log_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/invalid-email") {
+            log_validation.innerHTML = "Błędny email!";
+            log_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/user-not-found") {
+            log_validation.innerHTML = "Nie znaleziono użytkownika!";
+            log_validation.classList.add("show");
+            return;
+        }
+        else {
+            console.error(error);
+            log_validation.classList.remove("show");
+        }
+        console.log(error);
+    });
+    firebase.auth().onAuthStateChanged(function (use) {
+        var user = firebase.auth().currentUser;
+        if (user) {
+            let userId = firebase.auth().currentUser.uid;
+            firebase
+                .database()
+                .ref("users/" + userId + "/info/")
+                .once("value")
+                .then(function (snapshot) {
+                const email = snapshot.val().email;
+                document.cookie =
+                    "sessionData=" + JSON.stringify({ email: email }) + ";max-age=3600";
+            });
+        }
+    });
+}
+function logout() {
+    tier = 'Standard';
+    let cookieData = document.cookie.split(";").map((c) => c.trim());
+    for (let i = 0; i < cookieData.length; i++) {
+        if (cookieData[i].startsWith("sessionData=")) {
+            document.cookie =
+                "sessionData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            update();
+        }
+    }
+}
+function register() {
+    let reg_email = document.querySelector('#reg_email');
+    let reg_password = document.querySelector('#reg_password');
+    const reg_validation = document.querySelector("#reg_validation");
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    let currentDate = `Day: ${day}.${month}.${year} Time: ${hour}:${minutes}`;
+    firebase.auth().createUserWithEmailAndPassword(reg_email.value, reg_password.value).then(function () {
+        var user = firebase.auth().currentUser;
+        var database_ref = firebase.database().ref();
+        var user_data = {
+            email: reg_email.value,
+            password: reg_password.value,
+            last_login: currentDate,
+            create_date: currentDate
+        };
+        database_ref.child("users/" + user.uid + "/info/").set(user_data);
+        firebase.auth().signInWithEmailAndPassword(user_data.email, user_data.password).then(function (user) {
+            var user = firebase.auth().currentUser;
+            var database_ref = firebase.database().ref();
+            var user_data = {
+                last_login: currentDate,
+            };
+            database_ref.child("users/" + user.uid + "/info/").update(user_data);
+        });
+        firebase.auth().onAuthStateChanged(function (use) {
+            if (user) {
+                let userId = firebase.auth().currentUser.uid;
+                firebase.database().ref("users/" + userId + "/info/").once("value").then(function (snapshot) {
+                    const email = snapshot.val().email;
+                    document.cookie = "sessionData=" + JSON.stringify({ email: email }) + ";max-age=3600";
+                });
+            }
+        });
+    })
+        .catch(function (error) {
+        if (error.code === "auth/wrong-password") {
+            reg_validation.innerHTML = "Błędne hasło!";
+            reg_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/invalid-email") {
+            reg_validation.innerHTML = "Błędny email!";
+            reg_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/user-not-found") {
+            reg_validation.innerHTML = "Nie znaleziono użytkownika!";
+            reg_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/weak-password") {
+            reg_validation.innerHTML = "Hasło jest zbyt krótkie!";
+            reg_validation.classList.add("show");
+            return;
+        }
+        else if (error.code === "auth/email-already-in-use") {
+            reg_validation.innerHTML = "Ten email jest już zajęty!";
+            reg_validation.classList.add("show");
+            return;
+        }
+        else {
+            console.error(error);
+            reg_validation.classList.remove("show");
+        }
+        console.log(error);
+    });
+}
+const locate = window.location.search;
+const user = document.querySelector(".user");
+const input_log = document.querySelector('#input_log');
+if (locate != "") {
+    main.style.display = "none";
+}
+if (locate == "?login" || locate == "?register") {
+    user.classList.add("show");
+}
+if (locate == "?login") {
+    user.children[0].classList.add("show");
+}
+else if (locate == "?register") {
+    user.children[1].classList.add("show");
+}
+window.setTimeout(() => {
+    window.setInterval(() => {
+        let cookieData = document.cookie.split(";").map((c) => c.trim());
+        for (let i = 0; i < cookieData.length; i++) {
+            if (cookieData[i].startsWith("sessionData=")) {
+                var sessionData = JSON.parse(cookieData[i].split("=")[1]);
+                document.cookie = "sessionData=" + JSON.stringify({ email: sessionData.email, thread: currentThread }) + ";max-age=3600";
+                if (locate == "?register" || locate == "?login") {
+                    window.location.search = "";
+                }
+            }
+        }
+    });
+}, 2000);
+window.setInterval(() => {
+    if (tier == 'Premium') {
+        input_log.style.display = 'none';
+    }
+    else if (tier == 'Standard') {
+        input_log.style.display = 'flex';
+    }
+});
 //# sourceMappingURL=app.js.map

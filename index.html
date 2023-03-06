@@ -10,7 +10,21 @@
 </head>
 <body onload="update()">
 
-  <section class="main">
+  <section class="main premium">
+    <div class="sidebar">
+      <div class="top">
+        <button onclick="createThread()"><i class="fas fa-plus"></i></button>
+      </div>
+      <div class="threads">
+        <!-- <p class="active"><i class="fa-regular fa-comment-alt"></i></p> -->
+      </div>
+      <div class="settings">
+        <p onclick="deleteThreads()"><i class="fa-regular fa-trash-alt"></i></p>
+        <p onclick="_theme()"><i class="fa-regular fa-moon"></i></p>
+        <p><i class="fa-solid fa-arrow-up-right-from-square"></i></p>
+        <p onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></p>
+      </div>
+    </div>
     <div class="chat"></div>
     <div class="input">
       <div>
@@ -20,9 +34,53 @@
         </form>
       </div>
       <p>ChatBot <span id="update_version"></span>. Ostatnia aktualizacja: <span id="update_date"></span> Pakiet: <span id="bot_tier"></span></p>
+      <span id="input_log" onclick="changeForm(1)">Zaloguj się</span>
     </div>
   </section>
 
+  <section class="user">
+    <div class="login">
+      <h1>Witaj ponownie</h1>
+      <form id="log_form">
+        <input type="email" id="log_email" placeholder="Email" autocomplete="off">
+        <input type="password" id="log_password" placeholder="Hasło">
+        <p id="log_validation">Wrong password!</p>
+        <button type="submit">Kontynuuj</button>
+        <p>Nie masz konta? <span onclick="changeForm(0)">Zarejestruj się</span></p>
+      </form>
+    </div>
+    <div class="register">
+      <h1>Stwórz konto</h1>
+      <form id="reg_form">
+        <input type="email" id="reg_email" placeholder="Email" autocomplete="off">
+        <input type="password" id="reg_password" placeholder="Hasło">
+        <p id="reg_validation">Wrong password!</p>
+        <button type="submit">Kontynuuj</button>
+        <p>Masz już konto? <span onclick="changeForm(1)">Zaloguj się</span></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBAkaP2tjx46SR0aM0zuwv9kqj4wPzhI_Q",
+      authDomain: "chatbot-f3bc0.firebaseapp.com",
+      projectId: "chatbot-f3bc0",
+      storageBucket: "chatbot-f3bc0.appspot.com",
+      messagingSenderId: "679496535519",
+      appId: "1:679496535519:web:eaffcca887bb68959e086a"
+    };
+    // Inicjuj Firebase SDK
+    firebase.initializeApp(firebaseConfig);
+
+    // Uzyskaj dostęp do bazy danych Firebase
+    const database = firebase.database();
+  </script>
   <script src="./dist/app.js"></script>
   
 </body>
