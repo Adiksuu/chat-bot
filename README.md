@@ -17,7 +17,7 @@ Math:
 ---
 
 Latest command:
-![image](https://user-images.githubusercontent.com/75419729/223209646-7a5d5593-22df-40cd-a2d9-af2064fe5284.png)
+![image](https://user-images.githubusercontent.com/75419729/223485193-c832a2ba-daf2-42be-ac19-70c81fce4f05.png)
 
 How to register/login:
 
