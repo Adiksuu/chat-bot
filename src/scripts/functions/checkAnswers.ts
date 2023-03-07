@@ -24,6 +24,10 @@ function checkAnswer(question: string) {
             _data()
         } else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version()
+        } else if (question.includes('emoji')) {
+            _emoji(question)
+        } else if (question.includes('math')) {
+            _randomMath()
         } else if (question.includes('/thread')) {
             _changeCurrentThread(question)
         } else if (question.includes('todo')) {

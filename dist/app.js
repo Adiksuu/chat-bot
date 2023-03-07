@@ -22,6 +22,225 @@ function _count(question) {
     }
     answer = `Liczba wynosi teraz: ${counter}`;
 }
+const emojis = [
+    {
+        emoji: '😀'
+    },
+    {
+        emoji: '😁'
+    },
+    {
+        emoji: '😂'
+    },
+    {
+        emoji: '🤣'
+    },
+    {
+        emoji: '😅'
+    },
+    {
+        emoji: '😆'
+    },
+    {
+        emoji: '😉'
+    },
+    {
+        emoji: '😊'
+    },
+    {
+        emoji: '😋'
+    },
+    {
+        emoji: '😎'
+    },
+    {
+        emoji: '😍'
+    },
+    {
+        emoji: '😘'
+    },
+    {
+        emoji: '🥰'
+    },
+    {
+        emoji: '😗'
+    },
+    {
+        emoji: '😙'
+    },
+    {
+        emoji: '🥲'
+    },
+    {
+        emoji: '😚'
+    },
+    {
+        emoji: '🙂'
+    },
+    {
+        emoji: '🤗'
+    },
+    {
+        emoji: '🤩'
+    },
+    {
+        emoji: '🤔'
+    },
+    {
+        emoji: '🫡'
+    },
+    {
+        emoji: '🤨'
+    },
+    {
+        emoji: '😐'
+    },
+    {
+        emoji: '😑'
+    },
+    {
+        emoji: '😶'
+    },
+    {
+        emoji: '🫥'
+    },
+    {
+        emoji: '😶‍🌫️'
+    },
+    {
+        emoji: '🙄'
+    },
+    {
+        emoji: '😏'
+    },
+    {
+        emoji: '😣'
+    },
+    {
+        emoji: '😥'
+    },
+    {
+        emoji: '😮'
+    },
+    {
+        emoji: '🤐'
+    },
+    {
+        emoji: '😯'
+    },
+    {
+        emoji: '😪'
+    },
+    {
+        emoji: '😫'
+    },
+    {
+        emoji: '🥱'
+    },
+    {
+        emoji: '😴'
+    },
+    {
+        emoji: '😌'
+    },
+    {
+        emoji: '😛'
+    },
+    {
+        emoji: '😜'
+    },
+    {
+        emoji: '😝'
+    },
+    {
+        emoji: '🤤'
+    },
+    {
+        emoji: '😒'
+    },
+    {
+        emoji: '😓'
+    },
+    {
+        emoji: '😔'
+    },
+    {
+        emoji: '😕'
+    },
+    {
+        emoji: '🫤'
+    },
+    {
+        emoji: '🙃'
+    },
+    {
+        emoji: '🫠'
+    },
+    {
+        emoji: '🤑'
+    },
+    {
+        emoji: '😲'
+    },
+    {
+        emoji: '☹️'
+    },
+    {
+        emoji: '🙁'
+    },
+    {
+        emoji: '😖'
+    },
+    {
+        emoji: '😞'
+    },
+];
+function _emoji(getEmoji) {
+    let emojiNumber = Math.floor(Math.random() * (emojis.length + 1));
+    getEmoji = getEmoji.substring(7);
+    if (getEmoji == '') {
+        let selEmoji = emojis[emojiNumber].emoji;
+        answer = `Wylosowana emoji to: ${selEmoji}`;
+    }
+    else {
+        let selEmoji = parseInt(getEmoji);
+        if (selEmoji > (emojis.length - 1)) {
+            answer = `<i class="fas fa-circle-exclamation"></i> Podana emotka nie istnieje! Największe ID emotki to: ${emojis.length - 1}`;
+        }
+        else {
+            answer = `Wybrana emoji to: ${emojis[selEmoji].emoji}`;
+        }
+    }
+}
+function _randomMath() {
+    let firstNumber = Math.floor(Math.random() * 1001);
+    let secondNumber = Math.floor(Math.random() * 1001);
+    let selected = Math.floor(Math.random() * 5);
+    let exponentiation = Math.floor(Math.random() * 3);
+    if (selected == 0) {
+        answer = `Wylosowane działanie dla ciebie to: ${firstNumber} + ${secondNumber}`;
+    }
+    else if (selected == 1) {
+        answer = `Wylosowane działanie dla ciebie to: ${firstNumber} - ${secondNumber}`;
+    }
+    else if (selected == 2) {
+        answer = `Wylosowane działanie dla ciebie to: ${firstNumber} * ${secondNumber}`;
+    }
+    else if (selected == 3) {
+        answer = `Wylosowane działanie dla ciebie to: ${firstNumber} / ${secondNumber}`;
+    }
+    else if (selected == 4) {
+        if (exponentiation == 0) {
+            answer = `Wylosowane działanie dla ciebie to: ${firstNumber} ^2`;
+        }
+        else if (exponentiation == 1) {
+            answer = `Wylosowane działanie dla ciebie to: ${firstNumber} ^3`;
+        }
+        else if (exponentiation == 2) {
+            answer = `Wylosowane działanie dla ciebie to: ${firstNumber} ^4`;
+        }
+    }
+}
 function _random() {
     let randomMax = 10 + 1;
     let randomNum = Math.floor(Math.random() * randomMax);
@@ -190,7 +409,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>[v1.0.6-v1.0.7]: Wprowadzono system pakietu premium, na czas trwania wersji [Beta], każdy użytkownik ma dostęp do tego pakietu, <br><br> wystarczy że się zarejestruje! Po upływie czasu trwania wersji [Beta] ChatBota, pakiet premium zostanie ograniczony, ponieważ będzie go można otrzymać wyłącznie go kupując za 5$ (Cena tymczasowa). <br><br> Pakiet wprowadza wiele nowych funkcjonalności takich np. jak zapisywanie wątków, możliwość ich tworzenia/usuwania, szybka zmiana motywu strony (jasny/ciemny) i wiele więcej! <br><br>[v1.0.7]: Wprowadzono poprawkę, dla ładowania wiadomości, wcześniej po załadowaniu wiadomości zostawały one ponownie wczytywane z plików chatbota co prowadziło np. w momencie użycia /rps rock za pierwszym razem np. się wygrało a po odświeżeniu jeszcze raz było losowane i np. się przegrało, teraz jest już to statyczne! :D <br><br>Nowa komenda /thread dostępna tylko dla użytkowników, którzy posiadają pakiet premium! Umożliwia ona szybkie przemieszczanie się pomiędzy wątkami np. "/thread 2" przeniesie Ciebie do 2wątku, jeśli podasz wątek, który nie istnieje, dostaniesz informacje zwrotną, że podany wątek nie istnieje!';
+const news = '<br>Nowa komenda /emoji, która losuje emotikon a następnie go wysyła na chat, możesz również wybrać samemu jaka emotka ma się pokazać używając np. "/emoji 3" <br><br>Nowa komenda /math, losuje ona działanie matematyczne dla użytkownika :D';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -280,6 +499,12 @@ function checkAnswer(question) {
         }
         else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version();
+        }
+        else if (question.includes('emoji')) {
+            _emoji(question);
+        }
+        else if (question.includes('math')) {
+            _randomMath();
         }
         else if (question.includes('/thread')) {
             _changeCurrentThread(question);
@@ -492,8 +717,8 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.0.7 [Beta]";
-const updated = "06.03.2023";
+const version = "v1.0.8 [Beta]";
+const updated = "07.03.2023";
 let tier = "Standard";
 function update() {
     let cookieData = document.cookie.split(";").map((c) => c.trim());
