@@ -242,7 +242,7 @@ function _randomMath() {
     }
 }
 function _random() {
-    let randomMax = 10 + 1;
+    let randomMax = 10;
     let randomNum = Math.floor(Math.random() * randomMax);
     answer = `Wylosowany numer to: ${randomNum}`;
 }
@@ -409,7 +409,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>Nowa komenda /emoji, która losuje emotikon a następnie go wysyła na chat, możesz również wybrać samemu jaka emotka ma się pokazać używając np. "/emoji 3" <br><br>Nowa komenda /math, losuje ona działanie matematyczne dla użytkownika :D';
+const news = '<br>Została wprowadzona strona głowna ChatBota <span id="underline" onclick="toHome();">Strona Główna</span>, pracuję nad dokumentacją bota! Jeszcze przed wyjściem bota z wersji [Beta], dokumentacja powinna się pojawić! <br><br>Otwarcie informujemy, że powstało logo ChatBota! Mamy nadzieję, je zapamiętacie :D <img src="./src/assets/images/chatbot.png"></img>';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -717,8 +717,8 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.0.8 [Beta]";
-const updated = "07.03.2023";
+const version = "v1.0.9 [Beta]";
+const updated = "09.03.2023";
 let tier = "Standard";
 function update() {
     let cookieData = document.cookie.split(";").map((c) => c.trim());
@@ -1039,11 +1039,15 @@ function register() {
 const locate = window.location.search;
 const user = document.querySelector(".user");
 const input_log = document.querySelector('#input_log');
-if (locate != "") {
+const website = document.querySelector('.website');
+if (locate != "?chat") {
     main.style.display = "none";
 }
 if (locate == "?login" || locate == "?register") {
     user.classList.add("show");
+}
+if (locate == "") {
+    website.classList.add('show');
 }
 if (locate == "?login") {
     user.children[0].classList.add("show");
@@ -1059,7 +1063,7 @@ window.setTimeout(() => {
                 var sessionData = JSON.parse(cookieData[i].split("=")[1]);
                 document.cookie = "sessionData=" + JSON.stringify({ email: sessionData.email, thread: currentThread }) + ";max-age=3600";
                 if (locate == "?register" || locate == "?login") {
-                    window.location.search = "";
+                    window.location.search = "?chat";
                 }
             }
         }
@@ -1072,5 +1076,19 @@ window.setInterval(() => {
     else if (tier == 'Standard') {
         input_log.style.display = 'flex';
     }
+});
+function toHome() {
+    window.location.search = '';
+}
+function toChat() {
+    window.location.search = '?chat';
+}
+const burger = document.querySelector(".burger");
+const navLinks = document.querySelector(".nav-links");
+const navbar = document.querySelector(".navbar");
+burger.addEventListener("click", () => {
+    navLinks.classList.toggle("nav-active");
+    burger.classList.toggle("toggle");
+    navbar.classList.toggle("direction");
 });
 //# sourceMappingURL=app.js.map
