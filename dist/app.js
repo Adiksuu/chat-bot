@@ -9,6 +9,10 @@ function _flip() {
     }
     answer = `Rzut monetą (50/50) wskazuje na: ${flip}`;
 }
+function _color() {
+    const color = Math.floor(Math.random() * 16777215).toString(16);
+    answer = `Your generated color is: <span id="" style="color: #${color}">#${color}</span>`;
+}
 let counter = 0;
 function _count(question) {
     if (question.includes('+')) {
@@ -409,7 +413,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>Została wprowadzona strona głowna ChatBota <span id="underline" onclick="toHome();">Strona Główna</span>, pracuję nad dokumentacją bota! Jeszcze przed wyjściem bota z wersji [Beta], dokumentacja powinna się pojawić! <br><br>Otwarcie informujemy, że powstało logo ChatBota! Mamy nadzieję, je zapamiętacie :D <img src="./src/assets/images/chatbot.png"></img>';
+const news = '<br>Wprowadzono o wiele więcej nowych odpowiedzi na podane wyrazy, ponieważ jest podpięta wikipedia, więc jeśli jakiegoś pytania nie ma w naszej bazie pytań to odpowiedź jest szukana w wikipedii, jeśli jej nie znajdzie, wyświetla komunikat o nieznalezieniu odpowiedzi';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -478,7 +482,7 @@ function checkAnswer(question) {
                 answer = answers[question];
             }
             else {
-                failedQuestion();
+                searchWikipedia(question);
             }
         }
         else {
@@ -502,6 +506,9 @@ function checkAnswer(question) {
         }
         else if (question.includes('emoji')) {
             _emoji(question);
+        }
+        else if (question.includes('color')) {
+            _color();
         }
         else if (question.includes('math')) {
             _randomMath();
@@ -568,17 +575,24 @@ function checkAnswer(question) {
 let answer;
 let currentThread = 1;
 const chat = document.querySelector(".chat");
+const loads = document.querySelector('.loads');
 function createMessage(title) {
     let message = document.createElement("div");
     title = title.toLowerCase();
     checkAnswer(title);
     message.classList.add("message");
-    message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
+    loads.classList.add('show');
+    input.disabled = true;
+    window.setTimeout(() => {
+        message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
+    }, 2500);
     chat.appendChild(message);
-    chat.scrollTop = chat.scrollHeight;
     window.setTimeout(() => {
         message.classList.add('anim');
-    }, 150);
+        chat.scrollTop = chat.scrollHeight;
+        loads.classList.remove('show');
+        input.disabled = false;
+    }, 2500);
     let cookieData = document.cookie.split(";").map((c) => c.trim());
     for (let i = 0; i < cookieData.length; i++) {
         if (cookieData[i].startsWith("sessionData=")) {
@@ -717,7 +731,7 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.0.9 [Beta]";
+const version = "v1.1.0 [Beta]";
 const updated = "09.03.2023";
 let tier = "Standard";
 function update() {
@@ -747,6 +761,35 @@ function update() {
     update_date.innerHTML = updated;
     update_version.innerHTML = version;
     bot_tier.innerHTML = tier;
+}
+function removeSections(text) {
+    return text.replace(/\n==[^=]+==\n/g, "\n");
+}
+function removeSpecialCharacters(text) {
+    return text.replace(/<\/?[^>]+(>|$)/g, "").replace(/&[^;]+;/g, "");
+}
+function searchWikipedia(question) {
+    fetch(`https://pl.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=${question}&redirects=true&origin=*`)
+        .then((response) => response.json())
+        .then((data) => {
+        const pageId = Object.keys(data.query.pages)[0];
+        const pageContent = data.query.pages[pageId].extract;
+        const cleanText = removeSections(pageContent);
+        const processedText = removeSpecialCharacters(cleanText);
+        answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+    })
+        .catch(error => {
+        fetch(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=${question}&redirects=true&origin=*`)
+            .then((response) => response.json())
+            .then((data) => {
+            const pageId = Object.keys(data.query.pages)[0];
+            const pageContent = data.query.pages[pageId].extract;
+            const cleanText = removeSections(pageContent);
+            const processedText = removeSpecialCharacters(cleanText);
+            answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+        })
+            .catch(error => console.log(error));
+    });
 }
 const answers = {
     'czerwony': 'Kolor czerwony jest jednym z trzech podstawowych kolorów światła widzialnego, obok zielonego i niebieskiego. <br><br>Jest to kolor o długości fali około 620-750 nanometrów, co oznacza, że ma on najdłuższą długość fali spośród podstawowych kolorów. Kolor czerwony kojarzony jest z miłością, emocjami, energią i siłą. Jest często stosowany w symbolice, np. w flagach państwowych, logo firm czy symbolach religijnych. W psychologii koloru czerwonego przypisuje się wpływ na nasze emocje, może zwiększać poczucie pewności siebie, pobudzać i zwiększać tętno.',

@@ -2,6 +2,7 @@ let answer: any;
 let currentThread: number = 1
 
 const chat: HTMLInputElement = document.querySelector(".chat");
+const loads: HTMLDivElement = document.querySelector('.loads')
 function createMessage(title: string) {
   let message = document.createElement("div");
 
@@ -9,13 +10,19 @@ function createMessage(title: string) {
   checkAnswer(title)
 
   message.classList.add("message");
-  message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
+  loads.classList.add('show')
+  input.disabled = true
+  window.setTimeout(() => {
+    message.innerHTML = `<div class="message_title"><p>${title}</p></div><div class="message_content"><p>${answer}</p></div>`;
+  }, 2500)
 
   chat.appendChild(message);
-  chat.scrollTop = chat.scrollHeight
   window.setTimeout(() => {
     message.classList.add('anim')
-  }, 150)
+    chat.scrollTop = chat.scrollHeight
+    loads.classList.remove('show')
+    input.disabled = false
+  }, 2500)
 
   let cookieData = document.cookie.split(";").map((c) => c.trim());
     for (let i = 0; i < cookieData.length; i++) {

@@ -7,7 +7,7 @@ function checkAnswer(question: string) {
             if (answers.hasOwnProperty(question)) {
                 answer = answers[question];
             } else {
-                failedQuestion()
+                searchWikipedia(question)
             }
         } else {
             const inputValue = input.value.trim();
@@ -26,6 +26,8 @@ function checkAnswer(question: string) {
             _version()
         } else if (question.includes('emoji')) {
             _emoji(question)
+        }  else if (question.includes('color')) {
+            _color()
         } else if (question.includes('math')) {
             _randomMath()
         } else if (question.includes('/thread')) {
