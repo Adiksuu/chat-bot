@@ -3,8 +3,8 @@ const update_version: HTMLSpanElement =
   document.querySelector("#update_version");
 const bot_tier: HTMLSpanElement = document.querySelector("#bot_tier");
 
-const version: string = "v1.0.8 [Beta]";
-const updated: string = "07.03.2023";
+const version: string = "v1.0.9 [Beta]";
+const updated: string = "09.03.2023";
 let tier: string = "Standard";
 
 function update() {

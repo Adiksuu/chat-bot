@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&display=swap');
 body {
     --ultra-dark: #343640;
     --dark: #444654;
@@ -341,4 +342,257 @@ span#underline {
     text-decoration: underline;
     cursor: pointer;
     color: #10A37F;
+}
+
+section.website {
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    background: var(--ultra-dark);
+    display: none;
+}
+section.website.show {
+    display: block;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 17px;
+    background-color: var(--ultra-dark);
+    border-bottom: 3px solid #10A37F;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin: 0 10px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fbfbfb;
+    font-size: 18px;
+    padding: 3px 13px;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.nav-links a.button {
+    background: #10A37F;
+    color: var(--ultra-dark);
+    border-radius: 9999px;
+}
+
+.nav-links a:hover {
+    color: #10A37F;
+    background: #ffffff15;
+}
+
+.nav-links a.button:hover {
+    background: #e7e7e7;
+    color: #0f0f0f;
+}
+
+/* Burger Styles */
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.burger i {
+    color: #fff;
+    font-size: 24px;
+}
+
+@media only screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    /* Mobile Menu Styles */
+    .nav-active {
+        display: flex;
+        flex-direction: column;
+        padding: 42px 0;
+    }
+
+    .nav-active li {
+        margin: 10px 0;
+    }
+
+    .navbar.direction {
+        flex-direction: column;
+    }
+}
+
+.web__home {
+    height: 65vh;
+    width: 100%;
+    background: var(--dark);
+    position: relative;
+    top: 60px;
+    display: flex;
+    justify-content: center;
+}
+.web__home__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+}
+.web__home__info h3 {
+    color: #10A37F;
+    font-size: 49px;
+    font-weight: 700;
+}
+.web__home__info p {
+    color: #fff;
+    font-weight: 400;
+    font-size: 23px;
+    font-family: 'Nunito', sans-serif;
+}
+.web__home__info__buttons {
+    width: 100%;
+    padding-top: 64px;
+}
+.web__home__info__buttons button, .web__home__info__buttons a {
+    padding: 3px 13px;
+    height: 48px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 2px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    color: #fff;
+    font-weight: 600;
+    background: #10A37F;
+    box-shadow: 0 0 transparent,0 0 transparent, 0 0 15px rgba(0,0,0,.1);
+}
+.web__home__info__buttons a {
+    background: none;
+    color: #10A37F;
+    box-shadow: none;
+    text-decoration: none;
+}
+.web__home__info__buttons a:hover {
+    color: #fff;
+}
+.web__info {
+    background: var(--ultra-dark);
+    width: 100%;
+    height: 65vh;
+    position: relative;
+    top: 60px;
+}
+.web__info__heading {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+}
+.web__info__heading h2 {
+    color: #10A37F;
+    font-size: 28px;
+    border-bottom: 3px solid #ffffff15;
+    padding: 0 8px;
+}
+.web__info__about {
+    display: flex;
+    text-align: left;
+    align-items: center;
+    margin: auto;
+    height: 256px;
+    width: 900px;
+    flex-direction: row;
+    gap: 32px;
+}
+.web__info__about__left img {
+    height: 256px;
+    height: 256px;
+    border-radius: 8px;
+}
+.web__info__about__right p {
+    color: var(--gray);
+    font-size: 18px;
+    font-family: 'Nunito';
+}
+.footer {
+    background-color: var(--ultra-dark);
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
+    padding: 2rem 0;
+    position: relative;
+    top: 60px;
+}
+
+.footer__title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer__social {
+    margin-bottom: 2rem;
+}
+
+.footer__icon {
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: #fff;
+    margin: 0 1rem;
+}
+
+.footer p {
+    color: #fff;
+}
+
+.footer p span {
+    color: #10A37F;
+}
+
+.web__info#videos {
+    background: var(--dark);
+}
+.web__info#videos .web__info__about__left video{
+    height: 196px;
+    width: 356px;
+    border-radius: 4px;
+}
+
+.message_content img {
+    height: 128px;
+    position: relative;
+    display: flex;
 }

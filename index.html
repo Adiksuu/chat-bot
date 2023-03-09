@@ -7,6 +7,7 @@
   <title>Chat Bot</title>
   <link rel="stylesheet" href="/src/assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+  <link rel="shortcut icon" href="./src/assets/images/chatbot.png" type="image/x-icon">
 </head>
 <body onload="update()">
 
@@ -59,6 +60,68 @@
         <p>Masz już konto? <span onclick="changeForm(1)">Zaloguj się</span></p>
       </form>
     </div>
+  </section>
+
+  <section class="website">
+    <nav class="navbar">
+      <a href="#" class="logo">ChatBot</a>
+      <ul class="nav-links">
+        <li><a href="#">Dokumentacja <i class="fas fa-arrow-up-right-from-square"></i></a></li>
+        <li><a href="https://github.com/Adiksuu/chat-bot">Wersje <i class="fas fa-arrow-up-right-from-square"></i></a></li>
+        <li><a href="#videos">Wstęp <i class="fas fa-arrow-up-right-from-square"></i></a></li>
+        <li><a href="#" class="button" onclick="toChat()">Zacznij Teraz <i class="fas fa-arrow-up-right-from-square"></i></a></li>
+      </ul>
+      <div class="burger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+    <div class="web__home">
+      <div class="web__home__info">
+        <h3>ChatBot</h3>
+        <p>Zacznij korzystać już teraz i nie marnuj więcej czasu</p>
+        <div class="web__home__info__buttons">
+          <button onclick="toChat()">Zacznij teraz</button>
+          <a href="#videos">Zobacz wstęp <i class="fas fa-chevron-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="web__info">
+      <div class="web__info__heading">
+        <h2>INFORMACJE OGÓLNE</h2>
+      </div>
+      <div class="web__info__about">
+        <div class="web__info__about__left">
+          <img src="./src/assets/images/chatbot-logo.png" alt="">
+        </div>
+        <div class="web__info__about__right">
+          <p>ChatBot jest to prosty bot AI (Artificial intelligence), który odpowiada na pytania zadane w inpucie, oprócz tego, że bot jest w stanie odpowiadać na pytania, może również wykonywać polecenia takie jak np. /random, które działa tak, że losuje liczbę 0-9 <br><br>ChatBot jest nowym projektem, który powstał 04.03.2023 roku i w planach jest masa zaplanowanych wersji dla tego bota! Chcemy aby bot był odpowiedni dla każdego użytkownika, staramy się aby jego działanie było zrozumiałe</p>
+        </div>
+      </div>
+    </div>
+    <div class="web__info" id="videos">
+      <div class="web__info__heading" id="video">
+        <h2>FILM WSTĘPNY</h2>
+      </div>
+      <div class="web__info__about" id="video">
+        <div class="web__info__about__left">
+          <video src="./src/assets/images/tutorial.mp4" controls></video>
+        </div>
+        <div class="web__info__about__right" id="video">
+          <p>Nie wiesz jak funkcjonuje bot? obejrzyj ten krótki filmik wprowadzający aby dowiedzieć się najważniejszych informacji <br><br>Film obejrzany lecz nadal uważasz, że za mało wiesz? przeczytaj dokumentację</p>
+        </div>
+      </div>
+    </div>
+    <footer class="footer" id="footer">
+      <p class="footer__title">Adiksuu</p>
+  
+      <div class="footer__social">
+          <a href="https://patreon.com/adiksuu" class="footer__icon"><i class='fab fa-patreon'></i></a>
+          <a href="https://be.net/adiksuu" class="footer__icon"><i class='fab fa-behance'></i></a>
+          <a href="https://github.com/Adiksuu" class="footer__icon"><i class='fab fa-github'></i></a>
+      </div>
+  
+      <p>&#169; 2023 copyright <span>CodeAdiksuu</span>.</p>
+  </footer>
   </section>
 
   <!-- FIREBASE -->
