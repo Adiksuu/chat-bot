@@ -393,7 +393,7 @@ function _todo() {
             todos: '1. Wprowadzić funkcjonalność płatnego pakietu premium, który będzie wprowadzał więcej funkcji, komend oraz lepsze UI <i class="fas fa-check-circle"></i>'
         },
         {
-            todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-ban"></i>'
+            todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '3. Dodać funkcjonalność losowych odpowiedzi na dane pytanie <i class="fas fa-ban"></i>'
@@ -413,7 +413,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>Wprowadzono o wiele więcej nowych odpowiedzi na podane wyrazy, ponieważ jest podpięta wikipedia, więc jeśli jakiegoś pytania nie ma w naszej bazie pytań to odpowiedź jest szukana w wikipedii, jeśli jej nie znajdzie, wyświetla komunikat o nieznalezieniu odpowiedzi';
+const news = '<br>Poprawki odnośnie ładowania wiadomości, posiadając pakiet premium, wiadomości pobierane z wikipedii nie zostawały załadowywane, teraz jest już to naprawione. <br><br>Wprowadzono animacje ładowania wiadomości po odświeżeniu strony <br><br>Zostało wprowadzone tłumaczenie pobranych z wikipedii wiadomości z języka angielskiego na polski. <br><br>Wprowadzono kilka poprawek odnośnie wyglądu responsywnego dla urządzeń mobilnych. <br><br><i class="fas fa-circle-info"></i> W jednym wielkim skrócie: Jest to wersja poprawkowa';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -597,14 +597,16 @@ function createMessage(title) {
     for (let i = 0; i < cookieData.length; i++) {
         if (cookieData[i].startsWith("sessionData=")) {
             const userId = firebase.auth().currentUser.uid;
-            let messageInfo = {
-                question: title,
-                answer: answer
-            };
-            firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot) {
-                let messageId = snapshot.numChildren();
-                firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${messageId}`).set(messageInfo);
-            });
+            window.setTimeout(() => {
+                let messageInfo = {
+                    question: title,
+                    answer: answer
+                };
+                firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot) {
+                    let messageId = snapshot.numChildren();
+                    firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${messageId}`).set(messageInfo);
+                });
+            }, 2500);
         }
     }
 }
@@ -731,9 +733,11 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.0 [Beta]";
-const updated = "09.03.2023";
+const version = "v1.1.1 [Beta]";
+const updated = "10.03.2023";
 let tier = "Standard";
+loads.classList.add('show');
+input.disabled = true;
 function update() {
     let cookieData = document.cookie.split(";").map((c) => c.trim());
     for (let i = 0; i < cookieData.length; i++) {
@@ -786,7 +790,23 @@ function searchWikipedia(question) {
             const pageContent = data.query.pages[pageId].extract;
             const cleanText = removeSections(pageContent);
             const processedText = removeSpecialCharacters(cleanText);
-            answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+            let maxLength = Math.floor(Math.random() * 1501);
+            const textToTranslate = `${processedText.slice(0, (1000 + maxLength))}`;
+            function translateText(text) {
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pl&dt=t&q=${encodeURIComponent(text)}`;
+                return fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                    let translatedText = "";
+                    data[0].forEach((part) => {
+                        translatedText += part[0];
+                    });
+                    return translatedText;
+                });
+            }
+            translateText(textToTranslate)
+                .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}`)
+                .catch(error => console.error(error));
         })
             .catch(error => console.log(error));
     });
@@ -1003,7 +1023,7 @@ function logout() {
         if (cookieData[i].startsWith("sessionData=")) {
             document.cookie =
                 "sessionData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            update();
+            window.location.reload();
         }
     }
 }
@@ -1111,7 +1131,9 @@ window.setTimeout(() => {
             }
         }
     });
-}, 2000);
+    loads.classList.remove('show');
+    input.disabled = false;
+}, 2500);
 window.setInterval(() => {
     if (tier == 'Premium') {
         input_log.style.display = 'none';

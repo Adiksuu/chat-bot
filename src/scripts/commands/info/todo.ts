@@ -4,7 +4,7 @@ function _todo() {
             todos: '1. Wprowadzić funkcjonalność płatnego pakietu premium, który będzie wprowadzał więcej funkcji, komend oraz lepsze UI <i class="fas fa-check-circle"></i>'
         },
         {
-            todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-ban"></i>'
+            todos: '2. Wprowadzić większe grono pytań oraz ich odpowiedzi <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '3. Dodać funkcjonalność losowych odpowiedzi na dane pytanie <i class="fas fa-ban"></i>'

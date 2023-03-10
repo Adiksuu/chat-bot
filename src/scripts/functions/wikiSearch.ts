@@ -40,7 +40,26 @@ function searchWikipedia(question: any) {
       const cleanText = removeSections(pageContent);
       const processedText = removeSpecialCharacters(cleanText);
 
-      answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+      let maxLength = Math.floor(Math.random() * 1501)
+
+      const textToTranslate = `${processedText.slice(0, (1000 + maxLength))}`;
+
+      function translateText(text: any) {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pl&dt=t&q=${encodeURIComponent(text)}`;
+        return fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            let translatedText = "";
+            data[0].forEach((part: any) => {
+              translatedText += part[0];
+            });
+            return translatedText;
+          });
+      }
+
+      translateText(textToTranslate)
+        .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}`)
+        .catch(error => console.error(error));
     })
     .catch(error => console.log(error));
     });

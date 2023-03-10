@@ -29,15 +29,17 @@ function createMessage(title: string) {
       if (cookieData[i].startsWith("sessionData=")) {
         const userId = firebase.auth().currentUser.uid
       
-        let messageInfo: any = {
-          question: title,
-          answer: answer
-        }
-      
-        firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot: any) {
-          let messageId: any = snapshot.numChildren()
-          firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${messageId}`).set(messageInfo)
-        })
+        window.setTimeout(() => {
+          let messageInfo: any = {
+            question: title,
+            answer: answer
+          }
+        
+          firebase.database().ref(`users/${userId}/threads/thread_${currentThread}`).once("value").then(function (snapshot: any) {
+            let messageId: any = snapshot.numChildren()
+            firebase.database().ref(`users/${userId}/threads/thread_${currentThread}/message_${messageId}`).set(messageInfo)
+          })
+        }, 2500)
       }
     }
 }

@@ -1,4 +1,4 @@
-const news: string = '<br>Wprowadzono o wiele więcej nowych odpowiedzi na podane wyrazy, ponieważ jest podpięta wikipedia, więc jeśli jakiegoś pytania nie ma w naszej bazie pytań to odpowiedź jest szukana w wikipedii, jeśli jej nie znajdzie, wyświetla komunikat o nieznalezieniu odpowiedzi' 
+const news: string = '<br>Poprawki odnośnie ładowania wiadomości, posiadając pakiet premium, wiadomości pobierane z wikipedii nie zostawały załadowywane, teraz jest już to naprawione. <br><br>Wprowadzono animacje ładowania wiadomości po odświeżeniu strony <br><br>Zostało wprowadzone tłumaczenie pobranych z wikipedii wiadomości z języka angielskiego na polski. <br><br>Wprowadzono kilka poprawek odnośnie wyglądu responsywnego dla urządzeń mobilnych. <br><br><i class="fas fa-circle-info"></i> W jednym wielkim skrócie: Jest to wersja poprawkowa' 
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`
 }

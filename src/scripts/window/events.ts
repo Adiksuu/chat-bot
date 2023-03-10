@@ -32,7 +32,9 @@ window.setTimeout(() => {
       } 
     }
   });  
-}, 2000)
+  loads.classList.remove('show')
+  input.disabled = false
+}, 2500)
 
 window.setInterval(() => {
   if (tier == 'Premium') {

@@ -3,9 +3,11 @@ const update_version: HTMLSpanElement =
   document.querySelector("#update_version");
 const bot_tier: HTMLSpanElement = document.querySelector("#bot_tier");
 
-const version: string = "v1.1.0 [Beta]";
-const updated: string = "09.03.2023";
+const version: string = "v1.1.1 [Beta]";
+const updated: string = "10.03.2023";
 let tier: string = "Standard";
+loads.classList.add('show')
+input.disabled = true
 
 function update() {
   let cookieData = document.cookie.split(";").map((c) => c.trim());
