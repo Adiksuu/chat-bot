@@ -19,7 +19,7 @@ Math:
 ---
 
 Latest command:
-![image](https://user-images.githubusercontent.com/75419729/223485193-c832a2ba-daf2-42be-ac19-70c81fce4f05.png)
+![image](https://user-images.githubusercontent.com/75419729/224476626-11ada3d2-284e-4e67-8883-b8bddc0b3e3c.png)
 
 How to register/login:
 
@@ -29,5 +29,8 @@ https://user-images.githubusercontent.com/75419729/223143599-1b850bb0-34a8-4b92-
 
 ### COMMANDS LIST:
 
-Docs: comming soon...  
+Docs: 
+
+![image](https://user-images.githubusercontent.com/75419729/224476634-bef0f826-7d6b-4298-8edd-ab995681815b.png)
+
 
