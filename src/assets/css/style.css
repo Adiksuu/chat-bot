@@ -661,4 +661,7 @@ section.website.show {
         display: flex;
         justify-content: center;
     }
+    .web__info#videos .web__info__about__left video {
+        width: calc(100% - 16px);
+    }
 }

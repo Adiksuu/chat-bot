@@ -373,7 +373,7 @@ function _data() {
     }
 }
 function _docs() {
-    answer = `---=[4FUN]=--- <br>- /coinflip<br>- /color <br>- /count [+/-/reset] <br>- /emoji [ID_emoji] <br>- /math <br>- /random <br>- /repeat [zadanie_do_powtórzenia] <br>- /response [zadaj_pytanie] <br>- /rps [rock/paper/scissors] <br><br>---=[INFORMACYJNE]=--- <br>- /clear <br>- /help <br>- /theme <br>- /version <br><br>---=[BOT]=--- <br>- /data <br>- /docs <br>- /package <br>- /socials <br>- /threadinfo <br>- /time <br>- /todo <br>- /news <br><br>---=[WYSZUKIWANIE]=--- <br>- /google [wyszukaj] <br>- /wikipedia [wyszukaj] <br>- /youtube [wyszukaj] <br>- /translate [przetłumacz] <br><br>---=[KOMENDY PREMIUM]=--- <br>- /thread [ID wątku]`;
+    answer = `---=[4FUN]=--- <br><span id="underline" onclick="setInput('/coinflip')">- /coinflip</span><br><span id="underline" onclick="setInput('/color')">- /color</span><br><span id="underline" onclick="setInput('/count')">- /count [+/-/reset]</span><br><span id="underline" onclick="setInput('/emoji')">- /emoji [ID]</span><br><span id="underline" onclick="setInput('/math')">- /math</span><br><span id="underline" onclick="setInput('/random')">- /random</span><br><span id="underline" onclick="setInput('/repeat')">- /repeat [zdanie do powórzenia]</span><br><span id="underline" onclick="setInput('/response')">- /response [zadaj pytanie]</span><br><span id="underline" onclick="setInput('/rps')">- /rps [rock/paper/scissos]</span><br><br>---=[INFORMACYJNE]=--- <br><span id="underline" onclick="setInput('/clear')">- /clear</span><br><span id="underline" onclick="setInput('/help')">- /help</span><br><span id="underline" onclick="setInput('/theme')">- /theme</span><br><span id="underline" onclick="setInput('/version')">- /version</span><br><br>---=[BOT]=--- <br><span id="underline" onclick="setInput('/data')">- /data</span><br><span id="underline" onclick="setInput('/docs')">- /docs</span><br><span id="underline" onclick="setInput('/package')">- /package</span><br><span id="underline" onclick="setInput('/socials')">- /socials</span><br><span id="underline" onclick="setInput('/threadinfo')">- /threadinfo</span><br><span id="underline" onclick="setInput('/time')">- /time</span><br><span id="underline" onclick="setInput('/todo')">- /todo</span><br><span id="underline" onclick="setInput('/news')">- /news</span><br><br>---=[WYSZUKIWANIE]=--- <br><span id="underline" onclick="setInput('/google')">- /google [wyszukaj]</span><br><span id="underline" onclick="setInput('/wikipedia')">- /wikipedia [wyszukaj]</span><br><span id="underline" onclick="setInput('/youtube')">- /youtube [wyszukaj]</span><br><span id="underline" onclick="setInput('/translate')">- /translate [zdanie do tłumaczenia]</span><br><br>---=[KOMENDY PREMIUM]=--- <br><span id="underline" onclick="setInput('/thread')">- /thread [ID]</span>`;
 }
 function _package() {
     answer = `Twój pakiet to: ${tier}`;
@@ -420,7 +420,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>Nowa komenda /threadinfo - wyświetla liczbę wiadomości w aktualnym wątku <br><br>Nowa komenda /translate _tekst_ tłumaczy ona tekst z języka angielskiego na polski <br><br>Nowa komenda /docs, która wyświetla całą listę dostępnych komend! <br><br>Został wprowadzony odnośnik do źródła informacji po wysłaniu odpowiedzi na pytanie';
+const news = '<br>możliwość uruchomienia komendy po wybraniu jej z listy /docs <br><br>Wprowadzono zabezpieczenie odnośnie tego, że teraz już nie da się przetłumaczyć pustego tekstu /translate <br><br>Teraz w momencie gdy wyszukamy coś i tego nie znajdzie to zamiast wyświetlić się poprzednia odpowiedź lub "undefined" jeśli nie było poprzedniej wiadomości, to wyświetla się komunikat o tym, że nie znaleziono wyników wyszukiwania <br><br>Wprowadzono wykrywanie czy użytkownik próbuje zajrzeć do plików strony, jeśli tak, dostaje komunikat o tym, że nie może';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -443,6 +443,10 @@ function _google(question) {
 function _translate(question) {
     const toTranslate = question.substring(11);
     function translateText(text) {
+        if (toTranslate.length == toTranslate.split(' ').length - 1 || toTranslate == '') {
+            answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanego tekstu!`;
+            return;
+        }
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pl&dt=t&q=${encodeURIComponent(toTranslate)}`;
         return fetch(url)
             .then(response => response.json())
@@ -454,9 +458,13 @@ function _translate(question) {
             return translatedText;
         });
     }
-    translateText(toTranslate)
-        .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Przed tłumaczeniem:<br> ${toTranslate}<br><br><i class="fas fa-face-smile"></i> Po tłumaczeniu: <br>${translatedText}`)
-        .catch(error => console.error(error));
+    if (toTranslate.length == toTranslate.split(' ').length - 1 || toTranslate == '') {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanego tekstu!`;
+        return;
+    }
+    translateText(toTranslate).then((translatedText) => {
+        answer = `<i class="fas fa-face-smile"></i> Przed tłumaczeniem:<br> ${toTranslate}<br><br><i class="fas fa-face-smile"></i> Po tłumaczeniu: <br>${translatedText}`;
+    });
 }
 function _wikipedia(question) {
     question = question.substring(11);
@@ -502,6 +510,9 @@ log_form.addEventListener('submit', function (event) {
     event.preventDefault();
     login();
 });
+function setInput(message) {
+    input.value = message;
+}
 function failedQuestion() {
     answer = '<i class="fas fa-circle-exclamation"></i> Niestety ale nie udało mi się znaleść odpowiedzi na twoje pytanie, sprawdź czy w mojej dokumentacji znajduję się podane przez ciebie pytanie. Jeśli tak, niezwłocznie zgłoś nam to, że nie wyświetlam odpowiedzi! Jeśli nie, spróbuj nam ją zaproponować!';
 }
@@ -775,7 +786,7 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.2 [Beta]";
+const version = "v1.1.3 [Beta]";
 const updated = "11.03.2023";
 let tier = "Standard";
 loads.classList.add('show');
@@ -848,9 +859,13 @@ function searchWikipedia(question) {
             }
             translateText(textToTranslate)
                 .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}<br><br>Źródło: <a href="https://en.wikipedia.org/wiki/${question}">kliknij</a>`)
-                .catch(error => console.error(error));
+                .catch((error) => {
+                answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
+            });
         })
-            .catch(error => console.log(error));
+            .catch((error) => {
+            answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`;
+        });
     });
 }
 const answers = {
@@ -1141,6 +1156,22 @@ function register() {
         console.log(error);
     });
 }
+const disabledKeys = ["c", "C", "x", "J", "u", "I"];
+const showAlert = (e) => {
+    if (window.location.hostname.includes("localhost")) {
+        return;
+    }
+    e.preventDefault();
+    return alert("Wybacz, nie możesz sprawdzać kodu źródłowego strony 😞");
+};
+document.addEventListener("contextmenu", (e) => {
+    showAlert(e);
+});
+document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey && disabledKeys.includes(e.key)) || e.key === "F12") {
+        showAlert(e);
+    }
+});
 const locate = window.location.search;
 const user = document.querySelector(".user");
 const input_log = document.querySelector('#input_log');

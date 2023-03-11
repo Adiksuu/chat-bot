@@ -59,9 +59,14 @@ function searchWikipedia(question: any) {
 
       translateText(textToTranslate)
         .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}<br><br>Źródło: <a href="https://en.wikipedia.org/wiki/${question}">kliknij</a>`)
-        .catch(error => console.error(error));
+        .catch((error) => {
+          // console.error(error)
+          answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`
+        })
     })
-    .catch(error => console.log(error));
-    });
+    .catch((error) => {
+      // console.error(error)
+      answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanej nazwy!`
+    })
+})
 }
-

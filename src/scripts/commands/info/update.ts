@@ -1,4 +1,4 @@
-const news: string = '<br>Nowa komenda /threadinfo - wyświetla liczbę wiadomości w aktualnym wątku <br><br>Nowa komenda /translate _tekst_ tłumaczy ona tekst z języka angielskiego na polski <br><br>Nowa komenda /docs, która wyświetla całą listę dostępnych komend! <br><br>Został wprowadzony odnośnik do źródła informacji po wysłaniu odpowiedzi na pytanie' 
+const news: string = '<br>możliwość uruchomienia komendy po wybraniu jej z listy /docs <br><br>Wprowadzono zabezpieczenie odnośnie tego, że teraz już nie da się przetłumaczyć pustego tekstu /translate <br><br>Teraz w momencie gdy wyszukamy coś i tego nie znajdzie to zamiast wyświetlić się poprzednia odpowiedź lub "undefined" jeśli nie było poprzedniej wiadomości, to wyświetla się komunikat o tym, że nie znaleziono wyników wyszukiwania <br><br>Wprowadzono wykrywanie czy użytkownik próbuje zajrzeć do plików strony, jeśli tak, dostaje komunikat o tym, że nie może' 
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`
 }
