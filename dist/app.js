@@ -323,7 +323,7 @@ function _clear() {
     answer = '<i class="fas fa-check-circle"></i> Pomyślnie wyczyszczono chat!';
 }
 function _help() {
-    answer = `Szukasz pomocy? zajrzyj na tę <a href="#">stronę</a> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
+    answer = `Szukasz pomocy? zajrzyj na tę <span id="underline" onclick="createMessage('/docs')">stronę</span> aby wyświetlić dokumentację z pełną listą komend oraz poleceń, na które jestem w stanie odpowiedzieć`;
 }
 const body = document.querySelector('body');
 function _theme() {
@@ -372,11 +372,18 @@ function _data() {
         answer = `Aktualna data: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     }
 }
+function _docs() {
+    answer = `---=[4FUN]=--- <br>- /coinflip<br>- /color <br>- /count [+/-/reset] <br>- /emoji [ID_emoji] <br>- /math <br>- /random <br>- /repeat [zadanie_do_powtórzenia] <br>- /response [zadaj_pytanie] <br>- /rps [rock/paper/scissors] <br><br>---=[INFORMACYJNE]=--- <br>- /clear <br>- /help <br>- /theme <br>- /version <br><br>---=[BOT]=--- <br>- /data <br>- /docs <br>- /package <br>- /socials <br>- /threadinfo <br>- /time <br>- /todo <br>- /news <br><br>---=[WYSZUKIWANIE]=--- <br>- /google [wyszukaj] <br>- /wikipedia [wyszukaj] <br>- /youtube [wyszukaj] <br>- /translate [przetłumacz] <br><br>---=[KOMENDY PREMIUM]=--- <br>- /thread [ID wątku]`;
+}
 function _package() {
     answer = `Twój pakiet to: ${tier}`;
 }
 function _socials() {
     answer = `<a href="https://github.com/Adiksuu"><i class="fab fa-github"></i> Github</a> - Moje repozytoria z projektami<br><a href="https://behance.com/Adiksuu"><i class="fab fa-behance-square"></i> Behance</a> - Moje prace graficzne<br><a href="https://patreon.com/Adiksuu"><i class="fab fa-patreon"></i> Patreon</a> - Możliwość wsparcia :D`;
+}
+function _threadInfo() {
+    const threadElements = chat.children.length + 1;
+    answer = `W tym wątku znajduję się <span id="underline">${threadElements}</span> wiadomości. Wyczyścić je? <span onclick="createMessage('/clear')" id="underline">wyczyść</span>`;
 }
 function _time() {
     const date = new Date();
@@ -402,7 +409,7 @@ function _todo() {
             todos: '4. Podłączyć stronę pod bazę danych, tak aby wątki były zapisywane w historii <i class="fas fa-check-circle"></i>'
         },
         {
-            todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-ban"></i>'
+            todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '6. Dodać funkcjonalność podpowiadania pytań oraz komend w inpucie <i class="fas fa-ban"></i>'
@@ -413,9 +420,14 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>Poprawki odnośnie ładowania wiadomości, posiadając pakiet premium, wiadomości pobierane z wikipedii nie zostawały załadowywane, teraz jest już to naprawione. <br><br>Wprowadzono animacje ładowania wiadomości po odświeżeniu strony <br><br>Zostało wprowadzone tłumaczenie pobranych z wikipedii wiadomości z języka angielskiego na polski. <br><br>Wprowadzono kilka poprawek odnośnie wyglądu responsywnego dla urządzeń mobilnych. <br><br><i class="fas fa-circle-info"></i> W jednym wielkim skrócie: Jest to wersja poprawkowa';
+const news = '<br>Nowa komenda /threadinfo - wyświetla liczbę wiadomości w aktualnym wątku <br><br>Nowa komenda /translate _tekst_ tłumaczy ona tekst z języka angielskiego na polski <br><br>Nowa komenda /docs, która wyświetla całą listę dostępnych komend! <br><br>Został wprowadzony odnośnik do źródła informacji po wysłaniu odpowiedzi na pytanie';
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
+}
+function _randomImage() {
+    const generatedId = Math.floor(Math.random() * 10001);
+    const generatedWidth = 150 + Math.floor(Math.random() * 600);
+    answer = `Twój wygenerowany obraz to: <img src="https://source.unsplash.com/random/${generatedWidth}x200?sig=${generatedId}"></img>`;
 }
 function _google(question) {
     question = question.substring(8);
@@ -427,6 +439,24 @@ function _google(question) {
         googleSearch = `https://www.google.com/search?q=${question}`;
         answer = `<i class="fab fa-chrome"></i> Wyszukano artykuły w serwisie Google: <a href='${googleSearch}'>Zobacz</a>`;
     }
+}
+function _translate(question) {
+    const toTranslate = question.substring(11);
+    function translateText(text) {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pl&dt=t&q=${encodeURIComponent(toTranslate)}`;
+        return fetch(url)
+            .then(response => response.json())
+            .then(data => {
+            let translatedText = "";
+            data[0].forEach((part) => {
+                translatedText += part[0];
+            });
+            return translatedText;
+        });
+    }
+    translateText(toTranslate)
+        .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Przed tłumaczeniem:<br> ${toTranslate}<br><br><i class="fas fa-face-smile"></i> Po tłumaczeniu: <br>${translatedText}`)
+        .catch(error => console.error(error));
 }
 function _wikipedia(question) {
     question = question.substring(11);
@@ -503,6 +533,18 @@ function checkAnswer(question) {
         }
         else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version();
+        }
+        else if (question.includes('threadinfo')) {
+            _threadInfo();
+        }
+        else if (question.includes('/randomimage')) {
+            _randomImage();
+        }
+        else if (question.includes('/docs')) {
+            _docs();
+        }
+        else if (question.includes('translate')) {
+            _translate(question);
         }
         else if (question.includes('emoji')) {
             _emoji(question);
@@ -733,8 +775,8 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.1 [Beta]";
-const updated = "10.03.2023";
+const version = "v1.1.2 [Beta]";
+const updated = "11.03.2023";
 let tier = "Standard";
 loads.classList.add('show');
 input.disabled = true;
@@ -780,7 +822,7 @@ function searchWikipedia(question) {
         const pageContent = data.query.pages[pageId].extract;
         const cleanText = removeSections(pageContent);
         const processedText = removeSpecialCharacters(cleanText);
-        answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+        answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)} <br><br>Źródło: <a href="https://pl.wikipedia.org/wiki/${question}">kliknij</a>`;
     })
         .catch(error => {
         fetch(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=${question}&redirects=true&origin=*`)
@@ -805,7 +847,7 @@ function searchWikipedia(question) {
                 });
             }
             translateText(textToTranslate)
-                .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}`)
+                .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}<br><br>Źródło: <a href="https://en.wikipedia.org/wiki/${question}">kliknij</a>`)
                 .catch(error => console.error(error));
         })
             .catch(error => console.log(error));

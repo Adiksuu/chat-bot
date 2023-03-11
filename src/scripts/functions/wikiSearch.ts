@@ -23,7 +23,7 @@ function searchWikipedia(question: any) {
       const cleanText = removeSections(pageContent);
       const processedText = removeSpecialCharacters(cleanText);
 
-      answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)}`;
+      answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${processedText.slice(0, 1500)} <br><br>Źródło: <a href="https://pl.wikipedia.org/wiki/${question}">kliknij</a>`;
     })
     .catch(error => {
       // Wyślij zapytanie do API Wikipedii
@@ -58,7 +58,7 @@ function searchWikipedia(question: any) {
       }
 
       translateText(textToTranslate)
-        .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}`)
+        .then(translatedText => answer = `<i class="fas fa-face-smile"></i> Odpowiadając na twoje pytanie: ${translatedText}<br><br>Źródło: <a href="https://en.wikipedia.org/wiki/${question}">kliknij</a>`)
         .catch(error => console.error(error));
     })
     .catch(error => console.log(error));

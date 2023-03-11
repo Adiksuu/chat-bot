@@ -24,9 +24,17 @@ function checkAnswer(question: string) {
             _data()
         } else if (question.includes('version') || question.includes('ver') || question.includes('wersja')) {
             _version()
+        } else if (question.includes('threadinfo')) {
+            _threadInfo()
+        } else if (question.includes('/randomimage')) {
+            _randomImage()
+        } else if (question.includes('/docs')) {
+            _docs()
+        } else if (question.includes('translate')) {
+            _translate(question)
         } else if (question.includes('emoji')) {
             _emoji(question)
-        }  else if (question.includes('color')) {
+        } else if (question.includes('color')) {
             _color()
         } else if (question.includes('math')) {
             _randomMath()

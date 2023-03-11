@@ -656,4 +656,9 @@ section.website.show {
     .web__info__about__right {
         text-align: center;
     }
+    .web__info__about__left {
+        width: calc(100% - 16px);
+        display: flex;
+        justify-content: center;
+    }
 }

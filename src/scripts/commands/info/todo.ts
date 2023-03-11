@@ -13,7 +13,7 @@ function _todo() {
             todos: '4. Podłączyć stronę pod bazę danych, tak aby wątki były zapisywane w historii <i class="fas fa-check-circle"></i>'
         },
         {
-            todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-ban"></i>'
+            todos: '5. Wprowadzić dokumentacje ChatBota z całą listą dostępncyh komend oraz pytań <i class="fas fa-check-circle"></i>'
         },
         {
             todos: '6. Dodać funkcjonalność podpowiadania pytań oraz komend w inpucie <i class="fas fa-ban"></i>'
