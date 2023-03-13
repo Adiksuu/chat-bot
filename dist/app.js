@@ -1,3 +1,26 @@
+function _checkNumber(question) {
+    const ranNumber = Math.floor(Math.random() * 10);
+    question = question.substring(7);
+    if (question.length == question.split(' ').length - 1) {
+        answer = `Nie podałeś liczby!`;
+        return;
+    }
+    const number = parseInt(question);
+    if (number > 9) {
+        answer = `Maksymalna liczba to 9!`;
+        return;
+    }
+    if (number < 0) {
+        answer = `Minimalna liczba to 0!`;
+        return;
+    }
+    if (number == ranNumber) {
+        answer = `Udało ci się zgadnąć numer!`;
+    }
+    else {
+        answer = `Nie udało ci się! Wybrałeś numer ${number} a poprawny numer to był ${ranNumber}`;
+    }
+}
 function _flip() {
     const fliped = Math.floor(Math.random() * 2);
     let flip;
@@ -11,7 +34,7 @@ function _flip() {
 }
 function _color() {
     const color = Math.floor(Math.random() * 16777215).toString(16);
-    answer = `Your generated color is: <span id="" style="color: #${color}">#${color}</span>`;
+    answer = `Twój wygenerowany kolor: <span style="color: #${color}">#${color}</span>`;
 }
 let counter = 0;
 function _count(question) {
@@ -346,6 +369,10 @@ function _changeCurrentThread(question) {
             answer = `<i class="fas fa-circle-exclamation"></i> Nie podałeś numeru wątku!`;
             return;
         }
+        if (question.includes('-')) {
+            answer = `<i class="fas fa-circle-exclamation"></i> Wątek <span id="underline">${question}</span> nie istnieje!`;
+            return;
+        }
         if ((parseInt(question) > threads.children.length) || parseInt(question) == 0) {
             answer = `<i class="fas fa-circle-exclamation"></i> Wątek <span id="underline">${question}</span> nie istnieje!`;
         }
@@ -373,7 +400,7 @@ function _data() {
     }
 }
 function _docs() {
-    answer = `---=[4FUN]=--- <br><span id="underline" onclick="setInput('/coinflip')">- /coinflip</span><br><span id="underline" onclick="setInput('/color')">- /color</span><br><span id="underline" onclick="setInput('/count')">- /count [+/-/reset]</span><br><span id="underline" onclick="setInput('/emoji')">- /emoji [ID]</span><br><span id="underline" onclick="setInput('/math')">- /math</span><br><span id="underline" onclick="setInput('/random')">- /random</span><br><span id="underline" onclick="setInput('/repeat')">- /repeat [zdanie do powórzenia]</span><br><span id="underline" onclick="setInput('/response')">- /response [zadaj pytanie]</span><br><span id="underline" onclick="setInput('/rps')">- /rps [rock/paper/scissos]</span><br><br>---=[INFORMACYJNE]=--- <br><span id="underline" onclick="setInput('/clear')">- /clear</span><br><span id="underline" onclick="setInput('/help')">- /help</span><br><span id="underline" onclick="setInput('/theme')">- /theme</span><br><span id="underline" onclick="setInput('/version')">- /version</span><br><br>---=[BOT]=--- <br><span id="underline" onclick="setInput('/data')">- /data</span><br><span id="underline" onclick="setInput('/docs')">- /docs</span><br><span id="underline" onclick="setInput('/package')">- /package</span><br><span id="underline" onclick="setInput('/socials')">- /socials</span><br><span id="underline" onclick="setInput('/threadinfo')">- /threadinfo</span><br><span id="underline" onclick="setInput('/time')">- /time</span><br><span id="underline" onclick="setInput('/todo')">- /todo</span><br><span id="underline" onclick="setInput('/news')">- /news</span><br><br>---=[WYSZUKIWANIE]=--- <br><span id="underline" onclick="setInput('/google')">- /google [wyszukaj]</span><br><span id="underline" onclick="setInput('/wikipedia')">- /wikipedia [wyszukaj]</span><br><span id="underline" onclick="setInput('/youtube')">- /youtube [wyszukaj]</span><br><span id="underline" onclick="setInput('/translate')">- /translate [zdanie do tłumaczenia]</span><br><br>---=[KOMENDY PREMIUM]=--- <br><span id="underline" onclick="setInput('/thread')">- /thread [ID]</span>`;
+    answer = `---=[4FUN]=--- <br><span id="underline" onclick="setInput('/coinflip')">- /coinflip</span><br><span id="underline" onclick="setInput('/color')">- /color</span><br><span id="underline" onclick="setInput('/count')">- /count [+/-/reset]</span><br><span id="underline" onclick="setInput('/emoji')">- /emoji [ID]</span><br><span id="underline" onclick="setInput('/math')">- /math</span><br><span id="underline" onclick="setInput('/random')">- /random</span><br><span id="underline" onclick="setInput('/repeat')">- /repeat [zdanie do powórzenia]</span><br><span id="underline" onclick="setInput('/response')">- /response [zadaj pytanie]</span><br><span id="underline" onclick="setInput('/rps')">- /rps [rock/paper/scissos]</span><br><span id="underline" onclick="setInput('/randomimage')">- /randomimage</span><br><span id="underline" onclick="setInput('/check')">- /check [0-9]</span><br><br>---=[INFORMACYJNE]=--- <br><span id="underline" onclick="setInput('/clear')">- /clear</span><br><span id="underline" onclick="setInput('/help')">- /help</span><br><span id="underline" onclick="setInput('/theme')">- /theme</span><br><span id="underline" onclick="setInput('/version')">- /version</span><br><br>---=[BOT]=--- <br><span id="underline" onclick="setInput('/data')">- /data</span><br><span id="underline" onclick="setInput('/docs')">- /docs</span><br><span id="underline" onclick="setInput('/package')">- /package</span><br><span id="underline" onclick="setInput('/socials')">- /socials</span><br><span id="underline" onclick="setInput('/threadinfo')">- /threadinfo</span><br><span id="underline" onclick="setInput('/time')">- /time</span><br><span id="underline" onclick="setInput('/todo')">- /todo</span><br><span id="underline" onclick="setInput('/news')">- /news</span><br><br>---=[WYSZUKIWANIE]=--- <br><span id="underline" onclick="setInput('/google')">- /google [wyszukaj]</span><br><span id="underline" onclick="setInput('/wikipedia')">- /wikipedia [wyszukaj]</span><br><span id="underline" onclick="setInput('/youtube')">- /youtube [wyszukaj]</span><br><span id="underline" onclick="setInput('/translate')">- /translate [zdanie do tłumaczenia]</span><br><br>---=[KOMENDY PREMIUM]=--- <br><span id="underline" onclick="setInput('/thread')">- /thread [ID]</span>`;
 }
 function _package() {
     answer = `Twój pakiet to: ${tier}`;
@@ -420,14 +447,13 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = '<br>możliwość uruchomienia komendy po wybraniu jej z listy /docs <br><br>Wprowadzono zabezpieczenie odnośnie tego, że teraz już nie da się przetłumaczyć pustego tekstu /translate <br><br>Teraz w momencie gdy wyszukamy coś i tego nie znajdzie to zamiast wyświetlić się poprzednia odpowiedź lub "undefined" jeśli nie było poprzedniej wiadomości, to wyświetla się komunikat o tym, że nie znaleziono wyników wyszukiwania <br><br>Wprowadzono wykrywanie czy użytkownik próbuje zajrzeć do plików strony, jeśli tak, dostaje komunikat o tym, że nie może';
+const news = `<br>Naprawiono funkcjonalność komendy <span id="underline" onclick="setInput('/randomimage')"> /randomimage</span> oraz dodano jej wyświetlanie w dokumentacji <span id="underline" onclick="setInput('/docs')"> /docs</span><br><br>Nowa komenda <span id="underline" onclick="setInput('/check')">/check [0-9]</span>, losuje ona liczbę 0-9 a użytkownik próbuję ją zgadnąć, za każdym razem jest ona inna! <br><br>Wprowadzono kilka poprawek pozostałych komend oraz wyglądu</span>`;
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
 function _randomImage() {
-    const generatedId = Math.floor(Math.random() * 10001);
-    const generatedWidth = 150 + Math.floor(Math.random() * 600);
-    answer = `Twój wygenerowany obraz to: <img src="https://source.unsplash.com/random/${generatedWidth}x200?sig=${generatedId}"></img>`;
+    const generatedId = Math.floor(Math.random() * 1001);
+    answer = `Twój wygenerowany obraz to: <img src="https://picsum.photos/id/${generatedId}/256/128/"></img>`;
 }
 function _google(question) {
     question = question.substring(8);
@@ -553,6 +579,9 @@ function checkAnswer(question) {
         }
         else if (question.includes('/docs')) {
             _docs();
+        }
+        else if (question.includes('/check')) {
+            _checkNumber(question);
         }
         else if (question.includes('translate')) {
             _translate(question);
@@ -786,8 +815,10 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.3 [Beta]";
-const updated = "11.03.2023";
+const version = "v1.1.4 [Beta]";
+const updated = "12.03.2023";
+const chat_version_box = document.querySelector('#chat_version');
+chat_version_box.innerText = version;
 let tier = "Standard";
 loads.classList.add('show');
 input.disabled = true;
@@ -1162,7 +1193,7 @@ const showAlert = (e) => {
         return;
     }
     e.preventDefault();
-    return alert("Wybacz, nie możesz sprawdzać kodu źródłowego strony 😞");
+    return;
 };
 document.addEventListener("contextmenu", (e) => {
     showAlert(e);

@@ -4,7 +4,7 @@ const showAlert = (e: any) => {
     return;
   }
   e.preventDefault();
-  return alert("Wybacz, nie możesz sprawdzać kodu źródłowego strony 😞");
+  return
 };
 document.addEventListener("contextmenu", (e) => {
   showAlert(e);

@@ -11,6 +11,10 @@ function _changeCurrentThread(question: string) {
             answer = `<i class="fas fa-circle-exclamation"></i> Nie podałeś numeru wątku!`
             return;
         }
+        if (question.includes('-')) {
+            answer = `<i class="fas fa-circle-exclamation"></i> Wątek <span id="underline">${question}</span> nie istnieje!`
+            return;
+        }
 
         if ((parseInt(question) > threads.children.length) || parseInt(question) == 0) {
             answer = `<i class="fas fa-circle-exclamation"></i> Wątek <span id="underline">${question}</span> nie istnieje!`

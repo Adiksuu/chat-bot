@@ -527,6 +527,7 @@ section.website.show {
     font-size: 28px;
     border-bottom: 3px solid #ffffff15;
     padding: 0 8px;
+    text-align: center;
 }
 .web__info__about {
     display: flex;
@@ -664,4 +665,7 @@ section.website.show {
     .web__info#videos .web__info__about__left video {
         width: calc(100% - 16px);
     }
+}
+.logo span {
+    font-size: 12px;
 }

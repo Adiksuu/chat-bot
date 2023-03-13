@@ -30,6 +30,8 @@ function checkAnswer(question: string) {
             _randomImage()
         } else if (question.includes('/docs')) {
             _docs()
+        } else if (question.includes('/check')) {
+            _checkNumber(question)
         } else if (question.includes('translate')) {
             _translate(question)
         } else if (question.includes('emoji')) {
