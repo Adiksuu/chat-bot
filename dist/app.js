@@ -317,10 +317,10 @@ function _rps(question) {
         answer = `Bot wybrał kamień! Wygrywasz!`;
     }
     else if (botSelect == 0 && question.includes('scissors')) {
-        answer = `Bot wybrał kamień! Przegrywasz! Kurwa`;
+        answer = `Bot wybrał kamień! Przegrywasz!`;
     }
     else if (botSelect == 1 && question.includes('rock')) {
-        answer = `Bot wybrał papier! Przegrywasz! Kurwa`;
+        answer = `Bot wybrał papier! Przegrywasz!`;
     }
     else if (botSelect == 1 && question.includes('paper')) {
         answer = `Bot też wybrał papier! Remis!`;
@@ -332,7 +332,7 @@ function _rps(question) {
         answer = `Bot wybrał nożyce! Wygrywasz!`;
     }
     else if (botSelect == 2 && question.includes('paper')) {
-        answer = `Bot wybrał nożyce! Przegrywasz! Kurwa`;
+        answer = `Bot wybrał nożyce! Przegrywasz!`;
     }
     else if (botSelect == 2 && question.includes('scissors')) {
         answer = `Bot też wybrał nożyce! Remis!`;
