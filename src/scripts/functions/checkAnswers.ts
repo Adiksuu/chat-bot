@@ -26,6 +26,12 @@ function checkAnswer(question: string) {
             _version()
         } else if (question.includes('threadinfo')) {
             _threadInfo()
+        } else if (question.includes('user')) {
+            _user(question)
+        } else if (question.includes('joke')) {
+            _joke()
+        } else if (question.includes('offend')) {
+            _offend(question)
         } else if (question.includes('/randomimage')) {
             _randomImage()
         } else if (question.includes('/docs')) {

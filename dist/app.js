@@ -239,6 +239,25 @@ function _emoji(getEmoji) {
         }
     }
 }
+function _joke() {
+    fetch("https://official-joke-api.appspot.com/random_joke")
+        .then((response) => response.json())
+        .then((data) => {
+        let joke = `${data.setup} ${data.punchline}`;
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pl&dt=t&q=${encodeURIComponent(joke)}`;
+        return fetch(url)
+            .then(response => response.json())
+            .then(data => {
+            let translatedText = "";
+            data[0].forEach((part) => {
+                translatedText += part[0];
+            });
+            answer = `Wygenerowany żart: ${translatedText}`;
+            return;
+        });
+    })
+        .catch((error) => console.error(error));
+}
 function _randomMath() {
     let firstNumber = Math.floor(Math.random() * 1001);
     let secondNumber = Math.floor(Math.random() * 1001);
@@ -447,7 +466,7 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = `<br>Naprawiono funkcjonalność komendy <span id="underline" onclick="setInput('/randomimage')"> /randomimage</span> oraz dodano jej wyświetlanie w dokumentacji <span id="underline" onclick="setInput('/docs')"> /docs</span><br><br>Nowa komenda <span id="underline" onclick="setInput('/check')">/check [0-9]</span>, losuje ona liczbę 0-9 a użytkownik próbuję ją zgadnąć, za każdym razem jest ona inna! <br><br>Wprowadzono kilka poprawek pozostałych komend oraz wyglądu</span>`;
+const news = `<br><br>Wprowadzono kilka poprawek pozostałych komend oraz wyglądu</span> <br><br>Nowa komenda <span id="underline" onclick="setInput('/user ip')"> /user ip</span> wyświetla ona IP użytkownika <br><br>Nowa komenda <span id="underline" onclick="setInput('/offend')"> /offend [imie]</span> wyświetla ona losowy opis podanego imienia`;
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
 }
@@ -512,6 +531,29 @@ function _youtube(question) {
         answer = `<i class="fab fa-youtube"></i> Wyszukano filmy w serwisie YouTube: <a href="https://www.youtube.com/results?search_query=${searchQuery}">zobacz</a>`;
     }
 }
+function _offend(name) {
+    const typedName = name.substring(8);
+    const randomID = Math.floor(Math.random() * namesDescriptions.length);
+    const randomDesc = namesDescriptions[randomID].desc;
+    answer = `Wygenerowany opis imienia "${typedName}" to: ${randomDesc}`;
+}
+function grapIP() {
+    fetch("https://api.ipify.org?format=json")
+        .then((response) => response.json())
+        .then((data) => {
+        answer = `Twój adres IP to: ${data.ip}`;
+    })
+        .catch((error) => console.error(error));
+}
+function _user(question) {
+    const userRequest = question.substring(6);
+    if (userRequest.includes("ip")) {
+        grapIP();
+    }
+    else {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono odpowiednich wyników dla podanego zapytania!`;
+    }
+}
 const form = document.querySelector('#input_form');
 const input = document.querySelector('#input');
 form.addEventListener('submit', function (event) {
@@ -573,6 +615,15 @@ function checkAnswer(question) {
         }
         else if (question.includes('threadinfo')) {
             _threadInfo();
+        }
+        else if (question.includes('user')) {
+            _user(question);
+        }
+        else if (question.includes('joke')) {
+            _joke();
+        }
+        else if (question.includes('offend')) {
+            _offend(question);
         }
         else if (question.includes('/randomimage')) {
             _randomImage();
@@ -815,8 +866,8 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.4 [Beta]";
-const updated = "12.03.2023";
+const version = "v1.1.5 [Beta]";
+const updated = "14.03.2023";
 const chat_version_box = document.querySelector('#chat_version');
 chat_version_box.innerText = version;
 let tier = "Standard";
@@ -899,6 +950,65 @@ function searchWikipedia(question) {
         });
     });
 }
+const namesDescriptions = [
+    {
+        desc: 'Takie małe chodzące gówno.'
+    },
+    {
+        desc: 'Kto by tam pomyślał, że to jeszcze istnieje?!'
+    },
+    {
+        desc: 'Więcej gadał, niż zrobił.'
+    },
+    {
+        desc: 'Takie małe, słabe i bezużyteczne.'
+    },
+    {
+        desc: 'Kto to wypuścił?'
+    },
+    {
+        desc: 'Ktoś mógłby to zastąpić kamieniami.'
+    },
+    {
+        desc: 'Nie warto ani wspominać.'
+    },
+    {
+        desc: 'Dobrze, że to nie jest warte wymagania uwagi.'
+    },
+    {
+        desc: 'Trucizna dla ludzkiego intelektu.'
+    },
+    {
+        desc: 'Gorsze niż nic.'
+    },
+    {
+        desc: 'Jakby ktoś wyciągnął to z kosza na śmieci.'
+    },
+    {
+        desc: 'Nawet nie warto o tym mówić.'
+    },
+    {
+        desc: 'Bezwartościowy element.'
+    },
+    {
+        desc: 'Mało zadowalające.'
+    },
+    {
+        desc: 'Najlepiej wyrzucić to do kosza.'
+    },
+    {
+        desc: 'Zagubione dno kosza na śmieci.'
+    },
+    {
+        desc: 'Takie małe, bezwartościowe gówno.'
+    },
+    {
+        desc: 'Ktoś powinien obciąć to w korzeniu.'
+    },
+    {
+        desc: 'Zmarnowany potencjał.'
+    },
+];
 const answers = {
     'czerwony': 'Kolor czerwony jest jednym z trzech podstawowych kolorów światła widzialnego, obok zielonego i niebieskiego. <br><br>Jest to kolor o długości fali około 620-750 nanometrów, co oznacza, że ma on najdłuższą długość fali spośród podstawowych kolorów. Kolor czerwony kojarzony jest z miłością, emocjami, energią i siłą. Jest często stosowany w symbolice, np. w flagach państwowych, logo firm czy symbolach religijnych. W psychologii koloru czerwonego przypisuje się wpływ na nasze emocje, może zwiększać poczucie pewności siebie, pobudzać i zwiększać tętno.',
     'pomarańczowy': 'Kolor pomarańczowy to mieszanka kolorów czerwonego i żółtego, o długości fali między 590 a 620 nanometrów. <br><br>Jest to kolor energetyczny i radosny, kojarzony z zachodem słońca, owocami cytrusowymi i ogniem. Pomarańczowy symbolizuje optymizm, przyjaźń, kreatywność i witalność. W psychologii koloru pomarańczowego przypisuje się wpływ na pobudzenie, zwiększenie koncentracji i motywację. Jest często stosowany w reklamie i projektowaniu graficznym, jako kolor przyciągający uwagę i zwiększający aktywność.',
