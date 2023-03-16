@@ -3,7 +3,7 @@ const update_version: HTMLSpanElement = document.querySelector("#update_version"
 const bot_tier: HTMLSpanElement = document.querySelector("#bot_tier");
 const update__info: HTMLParagraphElement = document.querySelector('#update__info')
 
-const version: string = "v1.1.6 [Beta]";
+const version: string = "v1.1.6(1) [Beta]";
 const updated: string = "16.03.2023";
 const chat_version_box: HTMLSpanElement = document.querySelector('#chat_version')
 chat_version_box.innerText = version
