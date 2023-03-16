@@ -28,6 +28,8 @@ function checkAnswer(question: string) {
             _threadInfo()
         } else if (question.includes('user')) {
             _user(question)
+        } else if (question.includes('music')) {
+            _music(question)
         } else if (question.includes('joke')) {
             _joke()
         } else if (question.includes('offend')) {

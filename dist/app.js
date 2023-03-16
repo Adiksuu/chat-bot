@@ -466,9 +466,77 @@ function _todo() {
         answer += `${todo[index].todos}<br>`;
     }
 }
-const news = `v1.1.5:<br><br>Wprowadzono kilka poprawek pozostałych komend oraz wyglądu</span> <br><br>Nowa komenda <span id="underline" onclick="setInput('/user ip')"> /user ip</span> wyświetla ona IP użytkownika <br><br>Nowa komenda <span id="underline" onclick="setInput('/offend')"> /offend [imie]</span> wyświetla ona losowy opis podanego imienia <br>v1.1.5(1): <br>Dodano wyświetlanie nowych komend w zakładce dokumentacji`;
+const news = `<br><br>Nowa funkcjonalność, od teraz można uruchamiać w tle własną muzykę! Całością można zarządzać pod komendą <span id="underline" onclick="setInput('/music')"> /music [source/play/pause/loop/mute]</span><br><br>Aby wybrać muzykę, trzeba mieć ją pobraną na swoim komputerze, a następnie po wyborze <span id="underline" onclick="setInput('/music source')"> /music source</span> klikając zielony przycisk wybieracie wasz plik muzyczny`;
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`;
+}
+let music = new Audio("");
+function m_loop() {
+    if (music.loop == false) {
+        music.loop = true;
+        answer = `<i class="fas fa-arrows-spin"></i> Aktualny plik audio będzie uruchamiany w pętli`;
+    }
+    else {
+        music.loop = false;
+        answer = `<i class="fas fa-arrows-spin"></i> Aktualny plik audio  nie będzie uruchamiany w pętli`;
+    }
+}
+function _music(settings) {
+    if (!firebase.auth().currentUser) {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie masz uprawnień do korzystania z tej komendy! Musisz posiadać pakiet Premium! Aktualny: ${tier}`;
+        return;
+    }
+    if (settings.includes("play")) {
+        m_play();
+    }
+    else if (settings.includes("pause")) {
+        m_pause();
+    }
+    else if (settings.includes("loop")) {
+        m_loop();
+    }
+    else if (settings.includes("source")) {
+        m_source();
+    }
+    else if (settings.includes("mute")) {
+        m_mute();
+    }
+    else {
+        answer = `<i class="fas fa-circle-exclamation"></i> Nie znaleziono takiej opcji! Dozwolone akcje: [play/pause/loop/source]`;
+    }
+}
+function m_mute() {
+    if (music.muted == false) {
+        music.muted = true;
+        answer = `<i class="fas fa-volume-xmark"></i> Aktualny plik audio został wyciszony`;
+    }
+    else {
+        music.muted = false;
+        answer = `<i class="fas fa-volume-high"></i> Aktualny plik audio został odciszony`;
+    }
+}
+function m_pause() {
+    music.pause();
+    answer = `<i class="fas fa-pause"></i> Pauzowałeś aktualny plik audio!`;
+}
+function m_play() {
+    music.play();
+    answer = `<i class="fas fa-play"></i> Włączyłeś aktualny plik audio!`;
+}
+function m_source() {
+    answer = `Wybierz plik Audio <label for="video-input"><span id="underline"><i class="fas fa-music"></i></span></label> <input type="file" id="video-input" accept="video/*">`;
+    window.setTimeout(() => {
+        let videoChange = document.querySelector("#video-input");
+        videoChange.addEventListener("change", (e) => {
+            const file = videoChange.files[0];
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                console.log(reader.result);
+                music.src = reader.result;
+            });
+            reader.readAsDataURL(file);
+        });
+    }, 5500);
 }
 function _randomImage() {
     const generatedId = Math.floor(Math.random() * 1001);
@@ -619,6 +687,9 @@ function checkAnswer(question) {
         else if (question.includes('user')) {
             _user(question);
         }
+        else if (question.includes('music')) {
+            _music(question);
+        }
         else if (question.includes('joke')) {
             _joke();
         }
@@ -702,6 +773,21 @@ function checkAnswer(question) {
         }
         else {
             failedQuestion();
+        }
+    }
+}
+const popup = document.querySelector("#popup");
+function closeUpdate() {
+    popup.classList.remove("active");
+    setInput("/news");
+    document.cookie = "news=" + JSON.stringify({ newsAccepted: true }) + ";max-age=86400";
+}
+function checkCookie() {
+    let cookieData = document.cookie.split(";").map((c) => c.trim());
+    for (let i = 0; i < cookieData.length; i++) {
+        if (cookieData[i].startsWith("news=")) {
+            var sessionData = JSON.parse(cookieData[i].split("=")[1]);
+            popup.classList.remove("active");
         }
     }
 }
@@ -866,10 +952,12 @@ function reloadThreads() {
 const update_date = document.querySelector("#update_date");
 const update_version = document.querySelector("#update_version");
 const bot_tier = document.querySelector("#bot_tier");
-const version = "v1.1.5(1) [Beta]";
-const updated = "14.03.2023";
+const update__info = document.querySelector('#update__info');
+const version = "v1.1.6 [Beta]";
+const updated = "16.03.2023";
 const chat_version_box = document.querySelector('#chat_version');
 chat_version_box.innerText = version;
+update__info.innerHTML = `Najnowsza aktualizacja ${version} wprowadzona ${updated}.<br> Zobacz <span>/news!</span>`;
 let tier = "Standard";
 loads.classList.add('show');
 input.disabled = true;
@@ -877,10 +965,10 @@ function update() {
     let cookieData = document.cookie.split(";").map((c) => c.trim());
     for (let i = 0; i < cookieData.length; i++) {
         if (cookieData[i].startsWith("sessionData=")) {
-            tier = "Premium";
             window.setTimeout(() => {
                 loadMessages();
                 loadThreads();
+                checkTier();
                 if (threads.children.length == 0) {
                     createThreadNow();
                 }
@@ -897,6 +985,7 @@ function update() {
             tier = "Standard";
         }
     }
+    checkCookie();
     update_date.innerHTML = updated;
     update_version.innerHTML = version;
     bot_tier.innerHTML = tier;
@@ -1296,6 +1385,14 @@ function register() {
         }
         console.log(error);
     });
+}
+function checkTier() {
+    let cookieData = document.cookie.split(";").map((c) => c.trim());
+    for (let i = 0; i < cookieData.length; i++) {
+        if (cookieData[i].startsWith("sessionData=")) {
+            tier = "Premium";
+        }
+    }
 }
 const disabledKeys = ["c", "C", "x", "J", "u", "I"];
 const showAlert = (e) => {

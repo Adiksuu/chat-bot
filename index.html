@@ -12,21 +12,14 @@
 <body onload="update()">
 
   <section class="main premium">
-
-    <!-- <div class="main__top">
-      <img src="./src/assets/images/chatbot.png" alt="" class="state">
-    </div>
-    <div class="main__bottom">
-      <div class="input">
-      <div>
-        <form id="input_form">
-          <input type="text" id="input" autocomplete="off" placeholder="Rozpocznij /help">
-          <button type="submit"><i class="fas fa-paper-plane"></i></button>
-        </form>
+    <div class="popup-screen active" id="popup">
+      <div class="popup-box">
+          <i class="fas fa-times close-btn" onclick="closeUpdate()"></i>
+          <h2>Nowa Aktualizacja</h2>
+          <p id="update__info"></p>
+          <a onclick="closeUpdate()" class="btn">Sprawdź nowości</a>
       </div>
-    </div>
-    </div> -->
-
+  </div>
     <div class="sidebar">
       <div class="top">
         <button onclick="createThread()"><i class="fas fa-plus"></i></button>

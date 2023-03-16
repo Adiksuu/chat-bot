@@ -1,4 +1,4 @@
-const news: string = `v1.1.5:<br><br>Wprowadzono kilka poprawek pozostałych komend oraz wyglądu</span> <br><br>Nowa komenda <span id="underline" onclick="setInput('/user ip')"> /user ip</span> wyświetla ona IP użytkownika <br><br>Nowa komenda <span id="underline" onclick="setInput('/offend')"> /offend [imie]</span> wyświetla ona losowy opis podanego imienia <br>v1.1.5(1): <br>Dodano wyświetlanie nowych komend w zakładce dokumentacji` 
+const news: string = `<br><br>Nowa funkcjonalność, od teraz można uruchamiać w tle własną muzykę! Całością można zarządzać pod komendą <span id="underline" onclick="setInput('/music')"> /music [source/play/pause/loop/mute]</span><br><br>Aby wybrać muzykę, trzeba mieć ją pobraną na swoim komputerze, a następnie po wyborze <span id="underline" onclick="setInput('/music source')"> /music source</span> klikając zielony przycisk wybieracie wasz plik muzyczny` 
 function _update() {
     answer = `W ostatniej aktualizacji ${version} wprowadzono: ${news}`
 }
