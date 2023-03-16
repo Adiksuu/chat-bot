@@ -31,6 +31,6 @@ https://user-images.githubusercontent.com/75419729/223143599-1b850bb0-34a8-4b92-
 
 Docs: 
 
-![image](https://user-images.githubusercontent.com/75419729/224476634-bef0f826-7d6b-4298-8edd-ab995681815b.png)
+![image](https://user-images.githubusercontent.com/75419729/225684000-82ac2b90-d739-4a5e-a414-0e1edfb315c5.png)
 
 
